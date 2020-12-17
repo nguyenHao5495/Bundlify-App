@@ -1,0 +1,386 @@
+@import 'antd/dist/antd.css';
+.App {
+  text-align: center;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Roboto Condensed",sans-serif;
+  font-size: 14px;
+  background-color: #f4f6f8;
+  padding: 30px 12%;
+}
+.wrapper{
+  margin: 0 auto;
+  .Polaris-Layout{
+    margin-top: 0;
+    margin-left: 0;
+  }
+}
+.text-right{
+  text-align: right
+}
+div{
+  display: block;
+}
+#root{
+  button{
+    text-align: center;
+  }
+}
+span.ant-select-selection-item{
+  background: #448aff !important;
+  border-radius: 6px !important;
+  color: #fff;
+  opacity: 0.8;
+  .ant-select-selection-item-remove{
+    svg{
+      fill:#fff
+    }
+  }
+}
+.flex{
+  display: flex;
+  align-items: center;
+}
+.test{
+  .Polaris-Icon{
+    svg{
+      fill:#999
+    }
+  }
+}
+.product--loop{
+  .test{
+    position: relative;
+    .Polaris-Icon{
+      position: absolute;
+      top: 40%;
+      right: -15px;
+    }
+  }
+  .ant-row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.product-item{
+  text-align: center;
+  .product-iamge{
+    padding: 5px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0, .12);
+   img{
+    max-width: 100%
+   }
+  }
+  .product-title{
+    padding-top: 5px;
+    font-weight: 500;
+  }
+}
+.ant-list-grid{
+  .ant-spin-container{
+    .ant-row{
+      >div{
+        &:last-child{
+          .Polaris-Icon{
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+@media (min-width: 30.625em){
+  .Polaris-Card__Section {
+    padding: 2rem;
+  }
+}
+
+.Polaris-Tabs{
+  justify-content: center;
+  background: #fff;
+  box-shadow: var(--p-card-shadow, 0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(63, 63, 68, 0.15));
+  border-radius: 6px;
+  button{
+    &:focus{
+      box-shadow: none;
+    }
+  }
+  .Polaris-Tabs__Tab{
+    margin: 0 1.6em;
+    .title_tabs{
+      span{
+        text-transform: uppercase;
+        margin-top:10px;
+        display: block;
+        font-weight: 500;
+        color: rgba(0,0,0,0.7);
+        font-size: 13px;
+      }
+    }
+    &.Polaris-Tabs__Tab--selected{
+      .Polaris-Tabs__Title{
+        border-bottom: var(--p-override-none, 0.3rem) solid #6371c7
+      }
+      .title_tabs{
+        
+        .Polaris-Icon{
+          animation: mover 0.5s infinite alternate;
+          position: relative;
+        }
+        @-webkit-keyframes mover {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-10px); }
+        }
+        @keyframes mover {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-10px); }
+        }
+        span{
+          color: #6371c7;
+        }
+        svg{
+          fill: #6371c7
+        }
+      }
+      color: #6371c7;
+    }
+  }
+}
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button_add_table{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 0;
+  button{
+    border: none;
+    color: #448aff;
+    svg{
+      fill: #448aff
+    }
+    .Polaris-Button__Text{
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      span.Polaris-Icon{
+        margin-right: 10px;
+      }
+    }
+    
+  }
+}
+.empty_product{
+  color: red;
+  font-style: italic;
+  margin-top:10px;
+  display: block;
+}
+.delete-rule{
+  svg{
+    fill:#666
+  }
+}
+.Polaris-Button--fullWidth{
+  span{
+    width: 100%;
+  }
+  
+}
+.btn_add{
+  button.Polaris-Button--fullWidth{
+    max-width: 70%;
+    margin: 0 auto;
+  }
+  span.top{
+    text-transform: uppercase;
+    font-weight: 500;
+    //color: #faf0e6;
+    font-size: inherit;
+    display: block;
+    padding: 0 5px 2px 5px;
+  }
+  span.bottom{
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: inherit;
+    display: block;
+    padding: 2px 5px 0 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    //color: #faf0e6;
+  }
+}
+.DateTime{
+  text-align: center;
+  div{
+    width: 100%;
+    .ant-picker{
+      width: 75%;
+    }
+  }
+}
+.checkTime{
+  margin: 16px 16px 16px 0;
+  div{
+    width: 100%;
+    .ant-picker{
+      width: 75%;
+    }
+  }
+  .Polaris-Choice{
+    align-items: center;
+  }
+
+  .Polaris-Choice__Control{
+    width: var(--p-choice-size, 2.6rem);
+    height: var(--p-choice-size, 2.6rem);
+    .Polaris-Icon{
+      height: 3rem;
+      width: 3rem;
+    }
+  }
+}
+
+.total_order_table{
+  border: 1px dashed    rgb(196, 205, 213);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+  .left,.center,.right{
+    display: block;
+    padding-block-start: 1em;
+    padding-block-end: 1em;
+    padding-inline-start: 0px;
+    padding-inline-end: 0px;
+    width: 100%;
+    .Polaris-Heading{
+      display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    }
+  }
+  .left,.center{
+    border-right: 1px dashed   rgb(196, 205, 213);
+  }
+}
+.Recent_Orders{
+  margin: 15px 0;
+}
+.status_Bundles{
+  text-align: center;
+  margin-bottom: 15px;
+}
+.search_table{
+  margin-bottom: 15px;
+}
+.text-center{
+  text-align: center;
+}
+
+
+.btn_table{
+  display: flex;
+  align-items: center;
+  .Polaris-Icon{
+    margin-left: 10px;
+    svg{
+      fill:#1890ff
+    }
+  }
+}
+.btn_view{
+  margin: 15px 0;
+  padding-left: 30px;
+  button{
+    &:hover{
+      text-decoration: auto;
+    }
+  }
+}
+.margin--bottom--15{
+  margin-bottom: 15px;
+}
+.margin--top--15{
+  margin-top: 15px;
+}
+.bundles_show{
+  .Polaris-Connected{
+    max-width: 80px;
+  }
+}
+.input-table{
+  .Polaris-Connected{
+  max-width: 100px;
+  }
+}
+.Polaris-Labelled__LabelWrapper{
+  margin-bottom: 10px;
+  label{
+    color:#999
+  }
+}
+.color_layout{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom:20px;
+  .color_settings{
+    width: 30%;
+    label{
+      display: block;
+      color: #999;
+      margin-bottom: 10px;
+    }
+    input{
+      width: 70%;
+      height: 30px;
+    }
+  }
+}
+.Polaris-Layout__Section{
+  margin-top: 0;
+  margin-left: 0;
+}
+.regular-input-after{
+  border-radius: .25rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left-width: 0;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  line-height: 32px;
+  padding: .125rem .25rem;
+  border: 1px solid #ced4da;
+  box-shadow: 0 0 0 1px transparent, 0 1px 0 0 rgba(22, 29, 37, 0.05);
+  background-color: #fff;
+  height: 36px;
+}
