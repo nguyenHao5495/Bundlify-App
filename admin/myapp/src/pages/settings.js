@@ -60,26 +60,7 @@ const Settings = () => {
             console.log(err);
         })
     }, []);
-    const settings = {
-        id: id,
-        max_bundles: maxValue,
-        button_text: textButton,
-        title_text_color: valueTitleColor,
-        button_discount_text: textButtonDiscount,
-        button_background_color: valueBtnBgColor,
-        button_text_size: valueSizeButton,
-        title_text_size: valueSize,
-        button_text_color: valueBtntextColor,
-        title_background_color: valueTitleBgColor,
-        position: selected,
-        order_tag: tagOrder,
-        custom_css: valueTextArea,
-        custom_position: null,
-        enable_admin_mode: EnableValue,
-        typeRule: selectedPrice,
-        total_price_class: null,
-        shop: shop,
-    }
+
     //Function
     const onChangeValueMax = useCallback((newValue) => {
         setMaxValue(newValue);
@@ -128,13 +109,52 @@ const Settings = () => {
     const handleChangeTextArea = useCallback((newValue) => {
         setValueTextArea(newValue)
     }, [valueTextArea]);
+    const settings = {
+        id: id,
+        max_bundles: maxValue,
+        button_text: textButton,
+        title_text_color: valueTitleColor,
+        button_discount_text: textButtonDiscount,
+        button_background_color: valueBtnBgColor,
+        button_text_size: valueSizeButton,
+        title_text_size: valueSize,
+        button_text_color: valueBtntextColor,
+        title_background_color: valueTitleBgColor,
+        position: selected,
+        order_tag: tagOrder,
+        custom_css: valueTextArea,
+        custom_position: null,
+        enable_admin_mode: EnableValue,
+        typeRule: selectedPrice,
+        total_price_class: null,
+        shop: shop,
+    }
     const saveSetting = () => {
         if (settings["enable_admin_mode"] === true) {
             settings["enable_admin_mode"] = "0"
         } else {
             settings["enable_admin_mode"] = "1"
         }
-        Api.updateSettings(settings)
+        let formData = new FormData();
+        formData.append("id", id);
+        formData.append("max_bundles", maxValue);
+        formData.append("button_discount_text", textButton);
+        formData.append("title_text_color", valueTitleColor);
+        formData.append("button_discount_text", textButtonDiscount);
+        formData.append("button_background_color", valueBtnBgColor);
+        formData.append("title_text_size", valueSize);
+        formData.append("button_text_color", valueBtntextColor);
+        formData.append("title_background_color", valueTitleBgColor);
+        formData.append("position", selected);
+        formData.append("order_tag", tagOrder);
+        formData.append("custom_css", valueTextArea);
+        formData.append("custom_position", null);
+        formData.append("enable_admin_mode", EnableValue);
+        formData.append("typeRule", selectedPrice);
+        formData.append("shop", shop);
+        formData.append("total_price_class", null);
+        formData.append("action", "saveSettings");
+        Api.updateSettings(formData)
     }
     return (
         <div className="wrapper">
