@@ -72,7 +72,6 @@ class Bundle extends React.Component {
                         Qty: value // replace the email addr
                     }
                 }
-
                 // Leave every other item unchanged
                 return item;
             }),
@@ -90,7 +89,6 @@ class Bundle extends React.Component {
                         Amount: value // replace the email addr
                     }
                 }
-
                 // Leave every other item unchanged
                 return item;
             }),
@@ -108,11 +106,9 @@ class Bundle extends React.Component {
                         checkamount: value // replace the email addr
                     }
                 }
-
                 // Leave every other item unchanged
                 return item;
             },
-
             ),
         });
         //console.log('changed', value);
@@ -145,7 +141,7 @@ class Bundle extends React.Component {
                                         <div className="button_add_table">
 
                                             <Heading>Set discount rules</Heading>
-                                            <Button outline onClick={this.handleAdd}><Icon source={PlusMinor} />Add rule</Button>
+                                            <Button outline onClick={this.handleAdd} primary><Icon source={PlusMinor} />Add rule</Button>
                                         </div>
                                         <Table dataSource={dataSourceTable} rowKey={dataSourceTable => dataSourceTable.id} >
 

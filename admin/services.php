@@ -116,13 +116,13 @@ if (isset($_GET["action"])) {
 }
 
 if (isset($_POST["action"])) {
+    
     $action  = $_POST["action"];
     $shop    = $_POST["shop"];
     $shopify = shopifyInit($db, $shop, $appId);
     if ($action == "saveSettings") {
-        $data= json_decode(file_get_contents("php://input"), true);
-        $settings = $data["settings"];
-        $result = saveSettings($db, $shop, $settings);
+        $settings = json_decode($_POST["settings"],true);
+        $result = saveSettings($db, $shop,$settings);
         echo json_encode($result);
     }
     if ($action == "createBundle") {
@@ -343,20 +343,16 @@ function createRules($db, $shop, $bundleId, $listRules) {
 
 function saveSettings ($db, $shop, $settings) {
     $max_bundles                = $settings["max_bundles"];
-
     $title_background_color     = $settings["title_background_color"];
     $title_text_color           = $settings["title_text_color"];
     $title_text_size            = $settings["title_text_size"];
-
     $button_text                = $settings["button_text"];
     $button_discount_text       = $settings["button_discount_text"];
     $button_text_color          = $settings["button_text_color"];
     $button_text_size           = $settings["button_text_size"];
     $button_background_color    = $settings["button_background_color"];
-
     $custom_position            = $settings["custom_position"];
     $position                   = $settings["position"];
-
     $enable_admin_mode          = $settings["enable_admin_mode"] ? $settings["enable_admin_mode"] : 0;
     $order_tag                  = $settings["order_tag"];
     $custom_css                 = $settings["custom_css"];
@@ -368,6 +364,7 @@ function saveSettings ($db, $shop, $settings) {
             . " button_text='$button_text',button_discount_text='$button_discount_text',button_text_color='$button_text_color',button_text_size='$button_text_size',button_background_color='$button_background_color',"
             . " custom_position='$custom_position',position='$position',enable_admin_mode='$enable_admin_mode',order_tag='$order_tag',custom_css='$custom_css',typeRule='$typeRule'"
             . " WHERE shop = '$shop'");
+    
     return $query;
     
 }

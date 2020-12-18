@@ -16,7 +16,7 @@ const CreateData = () => {
             }
 
             {store.getState().dataSelect.length > 0 &&
-                <Button primary onClick={toggleActive}>Create</Button>
+                <Button primary>Create</Button>
             }
             {toastMarkup}
 

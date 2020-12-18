@@ -69,16 +69,16 @@ const Settings = () => {
         settextButton(newValue)
     }, [textButton]);
     const onChangeValueTitleColor = useCallback((newValue) => {
-        setvalueTitleColor(newValue)
+        setvalueTitleColor(newValue.target.value)
     }, [valueTitleColor]);
     const onChangeValueTitleBgColor = useCallback((newValue) => {
-        setvalueTitleBgColor(newValue)
+        setvalueTitleBgColor(newValue.target.value)
     }, [valueTitleBgColor]);
     const valueColorBgButton = useCallback((newValue) => {
-        setvalueBtnBgColor(newValue)
+        setvalueBtnBgColor(newValue.target.value)
     }, [valueBtnBgColor]);
     const valueColorTextButton = useCallback((newValue) => {
-        setvalueBtntextColor(newValue)
+        setvalueBtntextColor(newValue.target.value)
     }, [valueBtntextColor]);
     const valueTextButtonDiscount = useCallback((newValue) => {
         settextButtonDiscount(newValue)
@@ -135,26 +135,8 @@ const Settings = () => {
         } else {
             settings["enable_admin_mode"] = "1"
         }
-        let formData = new FormData();
-        formData.append("id", id);
-        formData.append("max_bundles", maxValue);
-        formData.append("button_discount_text", textButton);
-        formData.append("title_text_color", valueTitleColor);
-        formData.append("button_discount_text", textButtonDiscount);
-        formData.append("button_background_color", valueBtnBgColor);
-        formData.append("title_text_size", valueSize);
-        formData.append("button_text_color", valueBtntextColor);
-        formData.append("title_background_color", valueTitleBgColor);
-        formData.append("position", selected);
-        formData.append("order_tag", tagOrder);
-        formData.append("custom_css", valueTextArea);
-        formData.append("custom_position", null);
-        formData.append("enable_admin_mode", EnableValue);
-        formData.append("typeRule", selectedPrice);
-        formData.append("shop", shop);
-        formData.append("total_price_class", null);
-        formData.append("action", "saveSettings");
-        Api.updateSettings(formData)
+        console.log(settings);
+        Api.updateSettings(settings)
     }
     return (
         <div className="wrapper">

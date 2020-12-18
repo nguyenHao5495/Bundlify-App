@@ -28,7 +28,7 @@ div{
   }
 }
 span.ant-select-selection-item{
-  background: #448aff !important;
+  background: #6371c7 !important;
   border-radius: 6px !important;
   color: #fff;
   opacity: 0.8;
@@ -180,9 +180,12 @@ span.ant-select-selection-item{
   padding: 15px 0;
   button{
     border: none;
-    color: #448aff;
+    color: #6371c7;
+    &:hover{
+      color: #6371c7;
+    }
     svg{
-      fill: #448aff
+      fill: #6371c7
     }
     .Polaris-Button__Text{
       display: flex;

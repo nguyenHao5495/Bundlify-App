@@ -59,8 +59,6 @@ const AllOrder = ({ changeSelected }) => {
         } else {
             setData(dataTest)
         }
-
-
     }, [searchTerm]);
     const changeEdit = (value) => {
         console.log(value);
