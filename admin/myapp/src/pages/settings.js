@@ -64,51 +64,51 @@ const Settings = () => {
     //Function
     const onChangeValueMax = useCallback((newValue) => {
         setMaxValue(newValue);
-    }, [maxValue]);
+    }, []);
     const valueTextButton = useCallback((newValue) => {
         settextButton(newValue)
-    }, [textButton]);
+    }, []);
     const onChangeValueTitleColor = useCallback((newValue) => {
         setvalueTitleColor(newValue.target.value)
-    }, [valueTitleColor]);
+    }, []);
     const onChangeValueTitleBgColor = useCallback((newValue) => {
         setvalueTitleBgColor(newValue.target.value)
-    }, [valueTitleBgColor]);
+    }, []);
     const valueColorBgButton = useCallback((newValue) => {
         setvalueBtnBgColor(newValue.target.value)
-    }, [valueBtnBgColor]);
+    }, []);
     const valueColorTextButton = useCallback((newValue) => {
         setvalueBtntextColor(newValue.target.value)
-    }, [valueBtntextColor]);
+    }, []);
     const valueTextButtonDiscount = useCallback((newValue) => {
         settextButtonDiscount(newValue)
-    }, [textButtonDiscount]);
+    }, []);
     const onChangeValueSize = useCallback((newValue) => {
         setValueSize(newValue)
-    }, [valueSize]);
+    }, []);
     const onChangeValueSizeButton = useCallback((newValue) => {
         setValueSizeButton(newValue)
-    }, [valueSizeButton]);
+    }, []);
     const handleSelectChange = useCallback((value) => {
         setSelected(value)
-    }, [selected]);
+    }, []);
     const handleSelectChangePrice = useCallback((value) => {
         console.log(value);
         setSelectedPrice(value)
-    }, [selectedPrice]);
+    }, []);
     const handleHTMLChange = useCallback((value) => {
         setHTML(value)
-    }, [valueHTML]);
+    }, []);
     const handleTagChange = useCallback((value) => {
         settagOrder(value)
-    }, [tagOrder]);
+    }, []);
     const onChangeEnable = useCallback((newValue) => {
         setEnableValue(newValue)
-    }, [EnableValue]);
+    }, []);
 
     const handleChangeTextArea = useCallback((newValue) => {
         setValueTextArea(newValue)
-    }, [valueTextArea]);
+    }, []);
     const settings = {
         id: id,
         max_bundles: maxValue,

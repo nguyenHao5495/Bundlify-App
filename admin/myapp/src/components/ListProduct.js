@@ -35,7 +35,6 @@ class listProduct extends Component {
     }
     render() {
         const { dataSelect, err, dataListProduct } = this.state;
-        console.log(dataListProduct);
         return (
             <Card sectioned>
                 <Select

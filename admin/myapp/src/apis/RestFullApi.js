@@ -16,5 +16,21 @@ export default {
             }).catch((err) => {
                 console.log(err);
             })
+    },
+    createBundle: (data) => {
+        let formData = new FormData();
+        formData.append("bundle", JSON.stringify(data));
+        formData.append("action", "createBundle");
+        formData.append("shop", ShopDoamin);
+        console.log(...formData);
+        HTTP.post(`/admin/services.php?shop=${ShopDoamin}&action=saveSettings`, formData)
+            .then(res => {
+                console.log(res.data);
+                // if (res.data) {
+                //     document.getElementById("Order").tabIndex = 0
+                // }
+            }).catch((err) => {
+                console.log(err);
+            })
     }
 }

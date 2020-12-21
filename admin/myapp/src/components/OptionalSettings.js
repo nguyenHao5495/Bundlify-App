@@ -2,51 +2,65 @@ import React, { useState, useCallback, useEffect } from 'react';
 import moment from 'moment';
 import { Space, DatePicker } from 'antd';
 import { Checkbox, TextField } from '@shopify/polaris';
+import store from '../store/index';
+
 
 const OptionalSettings = () => {
     const [startTime, setStartTime] = useState(false);
     const [endTime, setEndTime] = useState(false);
-    const [valuetime, setValuetime] = useState("");
-    const [valuetimeEnd, setValuetimeEnd] = useState("");
+    const [valuetime, setValuetime] = useState(new Date());
+    const [valuetimeEnd, setValuetimeEnd] = useState(new Date());
     const [checkShowTag, setcheckShowTag] = useState(false);
     const [checktag, setCheckTag] = useState(false);
     const [dataTag, setDataTag] = useState('');
 
 
+    useEffect(() => {
+        let time_end = null;
+        if (endTime === true) {
+            time_end = valuetimeEnd
+        }
+        store.dispatch({
+            type: "DATA_TIME",
+            time: {
+                enable_start_date: startTime,
+                start_date: valuetime,
+                enable_end_date: endTime,
+                end_date: time_end,
+                require_logged_in: checkShowTag,
+                enable_customer_tags: checktag,
+                customer_tags: dataTag
 
+            }
+        })
+    }, [startTime, endTime, checkShowTag, checktag, valuetimeEnd, valuetime, dataTag]);
     //----------------Funtion methord---------//
     const handleDataTag = useCallback((value) => {
         setDataTag(value)
-        console.log(value);
     }, []);
     const checkStartTime = useCallback((newChecked) => {
-        setStartTime(newChecked)
+        setStartTime(newChecked);
     }, []);
     const checkEndTime = useCallback((newChecked) => {
         setEndTime(newChecked)
     }, []);
     const checkShowTagInput = useCallback((value) => {
-        setcheckShowTag(value)
+        setcheckShowTag(value);
+
     }, []);
     const valueTag = useCallback((value) => {
         setCheckTag(value)
+
     }, []);
-    useEffect(() => {
-        setValuetime(new Date())
-    }, [startTime]);
-    useEffect(() => {
-        setValuetimeEnd(new Date())
-    }, [endTime]);
     const valueTime = useCallback((value, dateString) => {
         if (value) {
-            console.log(dateString, value._d);
-            setValuetime(dateString)
+            setValuetime(dateString);
         }
     }, [])
     const valueTimeEnd = useCallback((value, dateString) => {
         if (value) {
-            console.log(dateString, value._d);
-            setValuetimeEnd(dateString)
+            setValuetimeEnd(dateString);
+
         }
     }, [])
     return (

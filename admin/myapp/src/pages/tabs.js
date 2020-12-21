@@ -15,7 +15,6 @@ export default function TabsExample() {
 
     const handleTabChange = useCallback(
         (selectedTabIndex) => {
-            console.log(selectedTabIndex);
             setSelected(selectedTabIndex)
         },
         [],

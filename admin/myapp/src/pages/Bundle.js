@@ -4,7 +4,9 @@ import { Card, Layout, Icon, Button, Heading, Select, TextStyle, FormLayout, Tex
 import ListProduct from '../components/ListProduct';
 import Optional from '../components/OptionalSettings';
 import CreateData from '../components/createData'
-import store from '../store'
+import store from '../store';
+import { ShopDoamin } from "../httpService/http-common";
+
 import {
     PlusMinor,
     DeleteMinor,
@@ -24,6 +26,7 @@ const BundleLayout = [
 ];
 
 class Bundle extends React.Component {
+
     state = {
         dataSourceTable: [
             {
@@ -36,8 +39,13 @@ class Bundle extends React.Component {
         count: 1,
         amount: 5,
         checkAmount: "percent_off",
-        active: false
+        active: false,
+        valueLayOut: "inline",
+        bundleMessage: "Bundle and Save!",
+        successMessage: "Congrats on saving!",
+        nameBundle: "A New Bundle"
     }
+
     handleAdd = () => {
         const { count, dataSourceTable, amount } = this.state;
         const newData = {
@@ -114,16 +122,50 @@ class Bundle extends React.Component {
         //console.log('changed', value);
     }
     onChangeLayout = (value) => {
-        //console.log('changed', value);
+        console.log('changed', value);
+        this.setState({
+            valueLayOut: value
+        })
     }
-
+    onChangeBundlemessage = (value) => {
+        this.setState({
+            bundleMessage: value
+        })
+    }
+    onChangesuccessmessage = (value) => {
+        this.setState({
+            successMessage: value
+        })
+    }
+    onChangeNameBundle = (value) => {
+        this.setState({
+            nameBundle: value
+        })
+    }
     toastMarkup = this.state.active ? (
         <Toast content="Message sent" />
     ) : null;
     render() {
-        const { dataSourceTable } = this.state;
-        const dataListProduct = store.getState().dataSelect;
-        console.log(dataSourceTable);
+        const { dataSourceTable, valueLayOut, bundleMessage, successMessage, nameBundle } = this.state;
+        const dataListProduct = store.getState().store.dataSelect;
+
+        console.log(store.getState().store1);
+        const dataBuldle = {
+            bundle_name: nameBundle,
+            bundle_msg: bundleMessage,
+            bundle_layout: valueLayOut,
+            success_msg: successMessage,
+            enable_start_date: store.getState().store1.time.enable_start_date,
+            start_date: store.getState().store1.time.start_date,
+            enable_end_date: store.getState().store1.time.enable_end_date,
+            end_date: store.getState().store1.time.end_date,
+            require_logged_in: store.getState().store1.time.require_logged_in,
+            enable_customer_tags: store.getState().store1.time.enable_customer_tags,
+            customer_tags: store.getState().store1.time.customer_tags,
+            shop: ShopDoamin,
+            enable_bundle: "1",
+            bundle_order: 0
+        }
         return (
             <Frame>
                 <div className="wrapper">
@@ -194,12 +236,13 @@ class Bundle extends React.Component {
                                     </Card>
                                     <Card sectioned>
                                         <FormLayout>
-                                            <TextField type="text" label="Bundle message" value="Bundle and Save!" />
-                                            <TextField type="text" label="Success message" value="Congrats on saving!" />
-                                            <TextField type="text" label="Name (this is to help you identify the offer within the app)" value="A New Bundle" />
+                                            <TextField type="text" label="Bundle message" value={bundleMessage} onChange={this.onChangeBundlemessage} />
+                                            <TextField type="text" label="Success message" value={successMessage} onChange={this.onChangesuccessmessage} />
+                                            <TextField type="text" label="Name (this is to help you identify the offer within the app)" value={nameBundle} onChange={this.onChangeNameBundle} />
                                             <Select
                                                 label="Bundle layout"
                                                 options={BundleLayout}
+                                                value={valueLayOut}
                                                 onChange={this.onChangeLayout}
                                             />
                                         </FormLayout>
@@ -217,7 +260,7 @@ class Bundle extends React.Component {
                                 </Layout.Section>
                                 <Layout.Section twoThird>
                                     <List className="product--loop"
-                                        grid={{ gutter: 16, column: 6 }}
+                                        grid={{ gutter: 16, column: 4 }}
                                         dataSource={dataListProduct}
                                         renderItem={item => (
                                             <List.Item>
@@ -238,10 +281,10 @@ class Bundle extends React.Component {
                                     <div className="btn_add">
                                         <Button fullWidth primary>
                                             <span className="top">Add Bundle</span>
-                                            {dataListProduct.length < 1 &&
+                                            {dataListProduct && dataListProduct.length < 1 &&
                                                 <span className="bottom">SAVE 5₫</span>
                                             }
-                                            {dataListProduct.length > 0 &&
+                                            {dataListProduct && dataListProduct.length > 0 &&
                                                 <span className="bottom">SAVE {dataListProduct.length * 5}₫</span>
                                             }
                                         </Button>
@@ -263,8 +306,7 @@ class Bundle extends React.Component {
                             </Layout>
                         </Card>
                         <div className="text-right margin--top--15 margin--bottom--15">
-
-                            <CreateData />
+                            <CreateData dataBuldle={dataBuldle} />
 
                         </div>
                     </div>
@@ -274,10 +316,23 @@ class Bundle extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    //console.log("state:", state);
+    console.log(state);
     return {
-        getStore: state.getStore,
-        dataSelect: state.dataSelect
+        getStore: state.store.getStore,
+        dataSelect: state.store.dataSelect,
+        starttime: {
+            checkStart: state.store1.checkStart,
+            valueTime: state.store1.valueTime
+        },
+        time: {
+            checkStart: state.store1.checkStart,
+            valueTimeStart: state.store1.valueTimeStart,
+            checkEnd: state.store1.checkEnd,
+            valueTimeEnd: state.store1.valueTimeEnd,
+            checkLogin: state.store1.checkLogin,
+            checkShowTag: state.store1.checkShowTag,
+            valueTags: state.store1.valueTags
+        }
     }
 }
 export default connect(mapStateToProps)(Bundle);

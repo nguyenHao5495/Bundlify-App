@@ -126,7 +126,7 @@ if (isset($_POST["action"])) {
         echo json_encode($result);
     }
     if ($action == "createBundle") {
-        $bundle = $_POST["bundle"];
+        $bundle = json_decode($_POST["bundle"],true);
         $result = createBundle($db, $shop, $bundle);
         echo json_encode($result);
     }

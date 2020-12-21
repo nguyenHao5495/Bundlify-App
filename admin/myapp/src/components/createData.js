@@ -1,9 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Button, Toast } from '@shopify/polaris';
-import store from '../store'
-const CreateData = () => {
+import store from '../store';
+import Api from '../apis/RestFullApi';
+const CreateData = (dataBuldle) => {
     const [active, setActive] = useState(false);
+    const postData = () => {
+        //document.getElementById("Order").tabIndex = 
 
+        //Api.createBundle(dataBuldle.dataBuldle)
+        console.log(dataBuldle);
+    }
     const toggleActive = useCallback(() => setActive((active) => !active), []);
 
     const toastMarkup = active ? (
@@ -11,12 +17,12 @@ const CreateData = () => {
     ) : null;
     return (
         <div style={{ height: '50px' }}>
-            {store.getState().dataSelect.length < 1 &&
+            {store.getState().store.dataSelect.length < 1 &&
                 <Button primary onClick={toggleActive}>Create</Button>
             }
 
-            {store.getState().dataSelect.length > 0 &&
-                <Button primary>Create</Button>
+            { store.getState().store.dataSelect.length > 0 &&
+                <Button primary onClick={postData}>Create</Button>
             }
             {toastMarkup}
 
