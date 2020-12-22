@@ -148,8 +148,6 @@ class Bundle extends React.Component {
     render() {
         const { dataSourceTable, valueLayOut, bundleMessage, successMessage, nameBundle } = this.state;
         const dataListProduct = store.getState().store.dataSelect;
-
-        console.log(store.getState().store1);
         const dataBuldle = {
             bundle_name: nameBundle,
             bundle_msg: bundleMessage,
@@ -306,7 +304,7 @@ class Bundle extends React.Component {
                             </Layout>
                         </Card>
                         <div className="text-right margin--top--15 margin--bottom--15">
-                            <CreateData dataBuldle={dataBuldle} />
+                            <CreateData dataBuldle={dataBuldle} seclect={this.props.changeSelected} />
 
                         </div>
                     </div>
@@ -316,7 +314,6 @@ class Bundle extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         getStore: state.store.getStore,
         dataSelect: state.store.dataSelect,

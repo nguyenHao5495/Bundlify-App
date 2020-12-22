@@ -1,45 +1,38 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Layout, Heading, TextStyle, Card, Modal, Icon, Button, TextField } from '@shopify/polaris';
 import { Table, Switch, Space, Popconfirm } from 'antd';
-
+import Api from '../apis/RestFullApi';
 import {
     EditMinor,
     DeleteMinor
 } from '@shopify/polaris-icons';
 import Bundle from '../pages/Bundle'
 const { Column } = Table;
-const dataTest = [
-    {
-        key: '1',
-        name: 'A New Bundle',
-        content: '2 products, 3 rules',
-        switch: true,
-    },
-    {
-        key: '2',
-        name: 'Bundle new',
-        content: '1 products, 3 rules',
-        switch: false,
-    },
-    {
-        key: '3',
-        name: 'Test',
-        content: '1 products, 3 rules',
-        switch: false,
-    }
-]
+let dataTest = []
 
 const AllOrder = ({ changeSelected }) => {
     const [data, setData] = useState(dataTest)
     const [searchTerm, setSearchTerm] = React.useState("");
     const [active, setActive] = useState(false);
+    useEffect(() => {
+        Api.listBundle().then((data) => {
+            setData(data.data);
+            dataTest = data.data
+        }).catch((err) => {
+            console.log(err);
+        })
+    }, []);
     const onChangeSwitch = (value, key) => {
+        const valueSwitch = false;
+        if (value !== '1') {
+            valueSwitch = true
+        }
         setData(data.map((item) => {
-            if (item.key === key) {
+            if (item.id === key) {
                 // Return a new object
                 return {
                     ...item,  // copy the existing item
-                    switch: value // replace the email addr
+                    switch: valueSwitch // replace the email addr
                 }
             }
 
@@ -53,7 +46,7 @@ const AllOrder = ({ changeSelected }) => {
     useEffect(() => {
         if (searchTerm !== "") {
             const results = data.filter(person =>
-                person.name.toLowerCase().includes(searchTerm.toLowerCase())
+                person.bundle_name.toLowerCase().includes(searchTerm.toLowerCase())
             );
             setData(results);
         } else {
@@ -66,7 +59,7 @@ const AllOrder = ({ changeSelected }) => {
     };
     const handleDelete = (key) => {
         setData(
-            data.filter((item) => item.key !== key),
+            data.filter((item) => item.id !== key),
         )
     };
     return (
@@ -117,23 +110,24 @@ const AllOrder = ({ changeSelected }) => {
                             }
 
                             <TextField value={searchTerm} onChange={onChangeSearch} placeholder="Search by bundle name..." />
-                            <Table dataSource={data} rowKey={data => data.key}>
+                            <Table dataSource={data} rowKey={data => data.id}>
                                 <Column
-                                    dataIndex="name"
-                                    key="name"
+                                    dataIndex="bundle_name"
+                                    key="bundle_name"
                                 />
                                 <Column
-                                    dataIndex="switch"
-                                    key="switch"
+                                    dataIndex="enable_bundle"
+                                    key="enable_bundle"
                                     render={(text, record) => (
                                         <div className="text-center">
-                                            <Switch checked={text} onChange={(value) => { onChangeSwitch(value, record.key) }} />
+                                            {text === "1" ? false : true}
+                                            <Switch checked={text} onChange={(value) => { onChangeSwitch(value, record.id) }} />
                                         </div>
 
                                     )} />
                                 <Column
-                                    dataIndex="name"
-                                    key="name"
+                                    dataIndex="bundle_name"
+                                    key="bundle_name"
                                     render={(text, record) => (
                                         <div className="text-center">
                                             <Space size="middle">

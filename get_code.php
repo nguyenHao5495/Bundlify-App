@@ -89,6 +89,7 @@ if (!empty($_GET['shop']) && !empty($_GET['code'])) {
     // add js to shop
     $check = true;
     $putjs1 = $shopify('GET',  APIVERSION.'script_tags.json');
+    var_dump($putjs1)
     if ($putjs1) {
         foreach ($putjs1 as $value) {
             if ($value["src"] == $rootLink . '/customer/bundle_advance.js') {

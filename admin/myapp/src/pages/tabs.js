@@ -22,6 +22,9 @@ export default function TabsExample() {
     const changeSelected = () => {
         setSelected(1)
     }
+    const changeSelected1 = () => {
+        setSelected(0)
+    }
     const tabs = [
         {
             id: 'Order',
@@ -52,7 +55,7 @@ export default function TabsExample() {
 
             ),
             data: (
-                <Bundle />
+                <Bundle changeSelected={changeSelected1} />
             ),
             panelID: 'accepts-marketing-content',
         },
