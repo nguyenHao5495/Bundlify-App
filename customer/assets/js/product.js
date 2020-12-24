@@ -15,11 +15,11 @@ let ot_ba_product_checkbox = ot_ba_mainClass + '-product-checkbox';
 let ot_ba_product_plus = ot_ba_mainClass + '-product-plus';
 let ot_ba_add_btn = ot_ba_mainClass + '-add-btn';
 let ot_ba_product_clearBoth = ot_ba_mainClass + '-clear-both';
-
+console.log(ot_combo_mainClass);
 // Start function
 let ot_ba_bundles = [];
 ot_ba_products();
-console.log('vao product')
+console.log('vao product :', ot_ba_settings)
 async function ot_ba_products() {
     ot_ba_createParentClass();
     ot_ba_applyCss();
@@ -141,16 +141,16 @@ function ot_ba_displayListProducts(comboClass, bundle) {
             $(`.${comboClass} .${ot_ba_listProductsClass} [ot-product-id="${product.id}"] .${ot_ba_product_select_variant}`).append(`
                 <option value="${variant.id}_${variant.price}_${product['product_quantity']}">${variant.title}</option>
             `);
-        }); 
-		// ----- hide selectbox if there is only one variant
-		if (product.variants.length <= 1) {
-			$(`.${comboClass} .${ot_ba_listProductsClass} [ot-product-id="${product.id}"] .${ot_ba_product_select_variant}`).css("display", "none");
-		}
+        });
+        // ----- hide selectbox if there is only one variant
+        if (product.variants.length <= 1) {
+            $(`.${comboClass} .${ot_ba_listProductsClass} [ot-product-id="${product.id}"] .${ot_ba_product_select_variant}`).css("display", "none");
+        }
 
         // Price
         $(`.${comboClass} .${ot_ba_listProductsClass} [ot-product-id="${product.id}"]`).append(`
             <div class="${ot_ba_product_price}">
-				<p><span class="money">${Shopify.formatMoney(product.variants[0].price*100)}</span></p>
+				<p><span class="money">${Shopify.formatMoney(product.variants[0].price * 100)}</span></p>
             </div>
         `);
 
@@ -198,13 +198,13 @@ function ot_ba_displayAddBtn(comboClass, bundle) {
 function ot_ba_displayDiscountPrice(bundleId) {
     let bundle = ot_ba_bundles.find(e => e.id == bundleId);
     let discountedPrice = ot_ba_calculateDiscountPrice(bundle);
-    let discountText = ot_ba_settings.button_discount_text; 
-    if(ot_ba_settings.typeRule == 0){
-        discountText = discountText.replace('{{discount}}','<span class="money">'+Shopify.formatMoney(discountedPrice*100)+'</span>');
-    }else{
-        discountText = discountText.replace('{{discount}}','<span>'+discountedPrice+'%</span>');
+    let discountText = ot_ba_settings.button_discount_text;
+    if (ot_ba_settings.typeRule == 0) {
+        discountText = discountText.replace('{{discount}}', '<span class="money">' + Shopify.formatMoney(discountedPrice * 100) + '</span>');
+    } else {
+        discountText = discountText.replace('{{discount}}', '<span>' + discountedPrice + '%</span>');
     }
-	
+
     $(`[ot-bundle-id=${bundleId}] .${ot_ba_add_btn} .bottom`).html(discountText);
 }
 // ------------ Format money  ---------------
@@ -263,7 +263,7 @@ function ot_ba_calculateDiscountPrice(bundle) {
         if ($(this).parent().parent().children(`.${ot_ba_product_checkbox}`).children('input').is(':checked')) {
             let variantId_price_quantity = $(this).val();
             let data = variantId_price_quantity.split('_');
-            let price = data[1]; 
+            let price = data[1];
             let quantity = data[2];
             totalPrice += Number(price) * Number(quantity);
             numberOfProducts += Number(quantity);
@@ -272,12 +272,12 @@ function ot_ba_calculateDiscountPrice(bundle) {
     let rule = bundle.rules.find(e => {
         return e.quantity == numberOfProducts;
     });
-    let discountedPrice = 0;  
-    if (rule) { 
-         
+    let discountedPrice = 0;
+    if (rule) {
+
         switch (rule.discount_type) {
-            case "percent_off": 
-                discountedPrice = totalPrice * rule.amount / 100;  
+            case "percent_off":
+                discountedPrice = totalPrice * rule.amount / 100;
                 break;
             case "fixed_price_off":
                 if (totalPrice > rule.amount) {
@@ -296,10 +296,10 @@ function ot_ba_calculateDiscountPrice(bundle) {
             default:
                 break;
         }
-    } 
-    if(ot_ba_settings.typeRule == 1){
-        discountedPrice = (discountedPrice/totalPrice).toFixed(2)*100;
-    } 
+    }
+    if (ot_ba_settings.typeRule == 1) {
+        discountedPrice = (discountedPrice / totalPrice).toFixed(2) * 100;
+    }
     return discountedPrice;
 }
 // ---- End Discount price ----
@@ -321,7 +321,7 @@ function ot_ba_addBundle(bundleId) {
     listSelectedVariants.each((index, select) => {
         if ($(select).parent().parent().children(`.${ot_ba_product_checkbox}`).children('input').is(':checked')) {
             let variantId_price_quantity = $(select).val();
-			console.log(variantId_price_quantity);
+            console.log(variantId_price_quantity);
             let data = variantId_price_quantity.split("_");
             let variantId = data[0];
             let quantity = data[2];

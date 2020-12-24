@@ -14,6 +14,20 @@ if (isset($_GET["action"])) {
     $action = $_GET["action"];
     $shop = $_GET["shop"];
     $shopify = shopifyInit($db, $shop, $appId);
+     if ($action == "postScript") {
+        $script_array = array(
+            'script_tag' => array(
+                'event' => 'onload',
+                'src' => $rootLink . '/customer/bundle_advance.js'
+            )
+        );
+        $shopify = shopifyInit($db, $shop, $appId);
+        $scriptTag = $shopify('POST', '/admin/api/2020-10/script_tags.json', $script_array);
+        var_dump($scriptTag);
+        die();
+
+        echo json_encode($scriptTag);
+    }
     if ($action == "getSettings") {
         $settings = fetchDbObject("SELECT * FROM bundle_advance_settings WHERE shop = '$shop'");
         echo json_encode($settings);
@@ -125,6 +139,7 @@ if (isset($_POST["action"])) {
         $result = saveSettings($db, $shop,$settings);
         echo json_encode($result);
     }
+    
     if ($action == "createBundle") {
         $bundle = json_decode($_POST["bundle"],true);
         $result = createBundle($db, $shop, $bundle);
@@ -151,10 +166,9 @@ if (isset($_POST["action"])) {
         $query = $db->query("UPDATE bundle_advance_bundles SET enable_bundle='$enable_bundle' WHERE shop = '$shop' AND id = '$id'");
     }
     if ($action == "updateBundle") {
-        $bundle             = $_POST["bundle"];
+        $bundle             = json_decode($_POST["bundle"],true);
         $bundle_id          = $bundle["id"];
         $doneUpdateBundle   = updateBundle($db, $shop, $bundle);
-
         $listProducts       = $_POST["products"];
         $deleteProducts     = $db->query("DELETE FROM bundle_advance_products WHERE shop = '$shop' AND bundle_id = '$bundle_id'");
         $doneCreateProducts = createSpecificProducts($db, $shop, $bundle_id, $listProducts);

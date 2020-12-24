@@ -14,6 +14,7 @@ const AllOrder = ({ changeSelected }) => {
     const [data, setData] = useState(dataTest)
     const [searchTerm, setSearchTerm] = React.useState("");
     const [active, setActive] = useState(false);
+    const [editData, seteditData] = useState();
     useEffect(() => {
         Api.listBundle().then((data) => {
             setData(data.data);
@@ -23,25 +24,38 @@ const AllOrder = ({ changeSelected }) => {
         })
     }, []);
     const onChangeSwitch = (value, key) => {
-        const valueSwitch = false;
-        if (value !== '1') {
-            valueSwitch = true
+        console.log(value);
+        let valueSwitch = "";
+        if (value === true) {
+            valueSwitch = '0'
+        } else {
+            valueSwitch = '1'
         }
-        setData(data.map((item) => {
-            if (item.id === key) {
-                // Return a new object
-                return {
-                    ...item,  // copy the existing item
-                    switch: valueSwitch // replace the email addr
+        console.log(valueSwitch);
+        if (valueSwitch) {
+            setData(data.map((item) => {
+                if (item.id === key.id) {
+                    // Return a new object
+
+                    return {
+                        ...item,  // copy the existing item
+                        enable_bundle: valueSwitch // replace the email addr
+                    }
+
                 }
-            }
-
-            // Leave every other item unchanged
-            return item;
-        }),
-        )
+                // Leave every other item unchanged
+                return item;
+            }),
+            )
+        }
+        seteditData({
+            ...key,
+            enable_bundle: valueSwitch
+        })
     }
-
+    useEffect(() => {
+        Api.updateBundleStatus(editData)
+    }, [editData]);
     const onChangeSearch = useCallback((newValue) => setSearchTerm(newValue), []);
     useEffect(() => {
         if (searchTerm !== "") {
@@ -116,14 +130,10 @@ const AllOrder = ({ changeSelected }) => {
                                     key="bundle_name"
                                 />
                                 <Column
-                                    dataIndex="enable_bundle"
-                                    key="enable_bundle"
                                     render={(text, record) => (
                                         <div className="text-center">
-                                            {text === "1" ? false : true}
-                                            <Switch checked={text} onChange={(value) => { onChangeSwitch(value, record.id) }} />
+                                            {record.enable_bundle == '1' ? <Switch checked={false} onChange={(value) => { onChangeSwitch(value, record) }} /> : <Switch checked={true} onChange={(value) => { onChangeSwitch(value, record) }} />}
                                         </div>
-
                                     )} />
                                 <Column
                                     dataIndex="bundle_name"

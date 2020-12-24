@@ -1,28 +1,28 @@
 if (typeof ot_ba_checkJS == "undefined") {
 	var ot_ba_checkJS = 1;
 	// Shop Name
-	const ot_ba_shopName   = Shopify.shop;
+	const ot_ba_shopName = Shopify.shop;
 	// Current product id
-	var ot_ba_productId  = __st.rid;
+	var ot_ba_productId = __st.rid;
 	// Root Link
-	var ot_ba_rootLink   = 'https://apps.omegatheme.com/bundle-advance/customer';
+	var ot_ba_rootLink = 'https://haolocal.omegatheme.com/omegashopifyapp/customer';
 
 	var ot_ba_settings;
 	if (typeof $ == "undefined") {
-        javascript: (function (e, s) {
-            e.src = s;
-            e.onload = function () {
-                $ = jQuery.noConflict();
-                ot_ba_init();
-            };
-            document.head.appendChild(e);
-        })(
-            document.createElement("script"),
-            "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-        );
-    } else {
-        ot_ba_init();
-    }
+		javascript: (function (e, s) {
+			e.src = s;
+			e.onload = function () {
+				$ = jQuery.noConflict();
+				ot_ba_init();
+			};
+			document.head.appendChild(e);
+		})(
+			document.createElement("script"),
+			"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+		);
+	} else {
+		ot_ba_init();
+	}
 
 	async function ot_ba_init() {
 		ot_ba_settings = await ot_ba_getSettings();
@@ -42,10 +42,10 @@ if (typeof ot_ba_checkJS == "undefined") {
 			<link href="${ot_ba_rootLink}/assets/css/bundle_advance.css?v=${ot_ba_settings.v}" rel="stylesheet" type="text/css" media="all">
 		`);
 		Shopify.money_format = ot_ba_settings.money_format;
-		console.log("Shopify.money_format",Shopify.money_format);
+		console.log("Shopify.money_format", Shopify.money_format);
 		let currentUrl = window.location.href.split('/');
-		if (currentUrl.indexOf('cart') > -1) { 
-			
+		if (currentUrl.indexOf('cart') > -1) {
+
 			ot_ba_getScript(`${ot_ba_rootLink}/assets/js/cart.js?v=${ot_ba_settings.v}`);
 		}
 		else if (currentUrl.indexOf('products') > -1) {
@@ -59,11 +59,11 @@ if (typeof ot_ba_checkJS == "undefined") {
 	function ot_ba_getSettings() {
 		return new Promise(resolve => {
 			$.ajax({
-				url : `${ot_ba_rootLink}/bundle_advance.php`,
+				url: `${ot_ba_rootLink}/bundle_advance.php`,
 				type: 'GET',
 				data: {
-					shop        : Shopify.shop,
-					action      : 'checkExpiredAndGetSettings',
+					shop: Shopify.shop,
+					action: 'checkExpiredAndGetSettings',
 				},
 				dataType: 'json',
 				cache: true
@@ -82,12 +82,12 @@ if (typeof ot_ba_checkJS == "undefined") {
 		var prior = document.getElementsByTagName('script')[0];
 		script.async = 1;
 
-		script.onload = script.onreadystatechange = function( _, isAbort ) {
-			if(isAbort || !script.readyState || /loaded|complete/.test(script.readyState) ) {
+		script.onload = script.onreadystatechange = function (_, isAbort) {
+			if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
 				script.onload = script.onreadystatechange = null;
 				script = undefined;
 
-				if(!isAbort) { if(callback) callback(); }
+				if (!isAbort) { if (callback) callback(); }
 			}
 		};
 
@@ -144,7 +144,7 @@ if (typeof ot_ba_checkJS == "undefined") {
 
 	Shopify.ot_ba_queue = [];
 
-	Shopify.ot_ba_moveAlong = function() {
+	Shopify.ot_ba_moveAlong = function () {
 		// If we still have requests in the queue, let's process the next one.
 		if (Shopify.ot_ba_queue.length) {
 			var request = Shopify.ot_ba_queue.shift();
@@ -158,12 +158,12 @@ if (typeof ot_ba_checkJS == "undefined") {
 	};
 
 	// Create a new Shopify.addItem function that takes the 'properties' parameter
-	Shopify.ot_ba_addItem = function(id, qty, properties, callback) {
+	Shopify.ot_ba_addItem = function (id, qty, properties, callback) {
 		var params = {
 			quantity: qty,
 			id: id
 		};
-		if(properties != false){
+		if (properties != false) {
 			params.properties = properties;
 		}
 		$.ajax({
@@ -171,20 +171,20 @@ if (typeof ot_ba_checkJS == "undefined") {
 			url: '/cart/add.js',
 			dataType: 'json',
 			data: params,
-			success: function(){
-				if(typeof callback === 'function'){
+			success: function () {
+				if (typeof callback === 'function') {
 					callback();
 				}
 			},
-			error: function(){}
+			error: function () { }
 		});
 	}
 
 	Shopify.ot_ba_pustToQueue = function (variantID, quantity, properties) {
 		Shopify.ot_ba_queue.push({
-		  variantId: variantID,
-		  quantity: quantity,
-		  properties: properties ? properties : ''
+			variantId: variantID,
+			quantity: quantity,
+			properties: properties ? properties : ''
 		});
 	}
 }

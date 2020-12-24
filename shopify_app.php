@@ -14,7 +14,7 @@ if(!empty($_GET['shop'])){ //check if the shop name is passed in the URL
 
 	if($select_store->num_rows > 0){
 		if(shopify_api\is_valid_request($_GET, $app_settings->shared_secret)){ //check if its a valid request from Shopify
-			header('Location: '.$rootLink.'/admin/admin.php?shop='.$shop); //redirect to the admin page
+			header('Location: '.$rootLink.'/admin/myapp/build?shop='.$shop); //redirect to the admin page
 		}
 	}else{
 		//convert the permissions to an array
