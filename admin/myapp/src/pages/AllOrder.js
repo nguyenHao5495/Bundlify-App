@@ -132,7 +132,7 @@ const AllOrder = ({ changeSelected }) => {
                                 <Column
                                     render={(text, record) => (
                                         <div className="text-center">
-                                            {record.enable_bundle == '1' ? <Switch checked={false} onChange={(value) => { onChangeSwitch(value, record) }} /> : <Switch checked={true} onChange={(value) => { onChangeSwitch(value, record) }} />}
+                                            {record.enable_bundle === '1' ? <Switch checked={false} onChange={(value) => { onChangeSwitch(value, record) }} /> : <Switch checked={true} onChange={(value) => { onChangeSwitch(value, record) }} />}
                                         </div>
                                     )} />
                                 <Column

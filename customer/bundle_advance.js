@@ -1,3 +1,4 @@
+console.log("bundle test");
 if (typeof ot_ba_checkJS == "undefined") {
 	var ot_ba_checkJS = 1;
 	// Shop Name
@@ -26,6 +27,7 @@ if (typeof ot_ba_checkJS == "undefined") {
 
 	async function ot_ba_init() {
 		ot_ba_settings = await ot_ba_getSettings();
+
 		if (ot_ba_settings) {
 			if (ot_ba_settings.enable_admin_mode == 0) {
 				ot_ba_loadFile();

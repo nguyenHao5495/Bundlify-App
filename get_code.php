@@ -91,13 +91,13 @@ if (!empty($_GET['shop']) && !empty($_GET['code'])) {
     $putjs1 = $shopify('GET',  APIVERSION.'script_tags.json');
     if ($putjs1) {
         foreach ($putjs1 as $value) {
-            if ($value["src"] == $rootLink . '/customer/bundle_advance.js') {
+            if ($value["src"] == $rootLink . '/admin/FrontEnd/test.js') {
                 $check = false;
             }
         }
     }
     if ($check) {
-        $putjs = $shopify('POST',  APIVERSION.'script_tags.json', array('script_tag' => array('event' => 'onload', 'src' => $rootLink . '/customer/bundle_advance.js')));
+        $putjs = $shopify('POST',  APIVERSION.'script_tags.json', array('script_tag' => array('event' => 'onload', 'src' => $rootLink . '/admin/FrontEnd/test.js')));
     }
     
     //hook when user remove app

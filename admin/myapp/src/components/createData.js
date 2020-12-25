@@ -6,14 +6,9 @@ const CreateData = (dataBuldle) => {
     const [active, setActive] = useState(false);
     const postData = () => {
         const data = Api.createBundle(dataBuldle.dataBuldle);
-        data.then(res => {
-            console.log(res.data);
-            if (res.data) {
-                dataBuldle.seclect()
-            }
-        }).catch((err) => {
-            console.log(err);
-        })
+        if (data) {
+            dataBuldle.seclect()
+        }
     }
     const toggleActive = useCallback(() => setActive((active) => !active), []);
 

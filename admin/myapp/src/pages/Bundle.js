@@ -29,15 +29,9 @@ class Bundle extends React.Component {
 
     state = {
         dataSourceTable: [
-            {
-                id: "Rule01",
-                Qty: "1",
-                Amount: 5,
-                checkamount: "percent_off"
-            },
         ],
-        count: 1,
-        amount: 5,
+        count: 0,
+        amount: 0,
         checkAmount: "percent_off",
         active: false,
         valueLayOut: "inline",
@@ -45,12 +39,23 @@ class Bundle extends React.Component {
         successMessage: "Congrats on saving!",
         nameBundle: "A New Bundle"
     }
+    componentWillUpdate(nextProps, nextState) {
+        if (nextState.dataSourceTable !== this.state.dataSourceTable) {
+            store.dispatch({
+                type: "DATA_RULES",
+                dataTable: nextState.dataSourceTable
+            })
+        }
+        if (nextState.dataSourceTable.length < store.getState().store.dataSelect.length) {
+            this.handleAdd();
+        }
 
+    }
     handleAdd = () => {
         const { count, dataSourceTable, amount } = this.state;
         const newData = {
             id: `Rule0${count + 1}`,
-            Qty: String(count + 1),
+            quantity: String(count + 1),
             Amount: amount + 5,
             checkamount: "percent_off"
         };
@@ -60,6 +65,7 @@ class Bundle extends React.Component {
             amount: amount + 5,
             checkamount: "percent_off"
         });
+
     }
     handleDelete = (id) => {
         const { dataSourceTable } = this.state;
@@ -77,7 +83,7 @@ class Bundle extends React.Component {
                     // Return a new object
                     return {
                         ...item,  // copy the existing item
-                        Qty: value // replace the email addr
+                        quantity: value // replace the email addr
                     }
                 }
                 // Leave every other item unchanged
@@ -186,8 +192,8 @@ class Bundle extends React.Component {
                                         <Table dataSource={dataSourceTable} rowKey={dataSourceTable => dataSourceTable.id} >
 
                                             <Column title="Total Qty"
-                                                dataIndex="Qty"
-                                                key="qty"
+                                                dataIndex="quantity"
+                                                key="quantity"
                                                 render={(text, record) => (
                                                     <div className="regular-input input-table" >
                                                         <TextField type="number" min={1} value={String(text)} onChange={(value) => this.onChange(value, record.id)} />
@@ -314,6 +320,7 @@ class Bundle extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
+    console.log(state);
     return {
         getStore: state.store.getStore,
         dataSelect: state.store.dataSelect,
@@ -329,7 +336,8 @@ const mapStateToProps = (state) => {
             checkLogin: state.store1.checkLogin,
             checkShowTag: state.store1.checkShowTag,
             valueTags: state.store1.valueTags
-        }
+        },
+        dataTable: state.store2.dataTable
     }
 }
 export default connect(mapStateToProps)(Bundle);

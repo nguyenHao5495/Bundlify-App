@@ -1,3 +1,4 @@
+
 // Main class
 let ot_ba_mainClass = 'ot-ba';
 let ot_ba_loader = ot_ba_mainClass + '-loader';
@@ -15,11 +16,11 @@ let ot_ba_product_checkbox = ot_ba_mainClass + '-product-checkbox';
 let ot_ba_product_plus = ot_ba_mainClass + '-product-plus';
 let ot_ba_add_btn = ot_ba_mainClass + '-add-btn';
 let ot_ba_product_clearBoth = ot_ba_mainClass + '-clear-both';
-
 // Start function
 let ot_ba_bundles = [];
 ot_ba_products();
-console.log('vao product moi:', ot_ba_settings)
+
+console.log('vao product moi nhe:', ot_ba_settings)
 async function ot_ba_products() {
     ot_ba_createParentClass();
     ot_ba_applyCss();
@@ -36,6 +37,7 @@ async function ot_ba_products() {
 }
 
 function ot_ba_showLoadingSpinner() {
+
     $(`.${ot_ba_mainClass}`).append(`
         <div class="${ot_ba_loader}" style="text-align: center;">
             <div></div>
@@ -75,7 +77,6 @@ function ot_ba_createParentClass() {
                 <div class="${ot_ba_mainClass}"></div>
             `);
         } else {
-            console.log(ot_ba_settings.position);
             $(`${ot_ba_settings.position}`).append(`
                 <div class="${ot_ba_mainClass}"></div>
             `);
@@ -339,7 +340,7 @@ function ot_ba_addBundle(bundleId) {
 function ot_ba_getBundles() {
     return new Promise(resolve => {
         $.ajax({
-            url: `${ot_ba_rootLink}/bundle_advance.php`,
+            url: `${ot_ba_rootLink}/customer/bundle_advance.php`,
             type: 'GET',
             data: {
                 shop: Shopify.shop,

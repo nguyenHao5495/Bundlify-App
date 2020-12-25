@@ -18,14 +18,32 @@ if (isset($_GET["action"])) {
         $script_array = array(
             'script_tag' => array(
                 'event' => 'onload',
-                'src' => $rootLink . '/customer/bundle_advance.js'
+                'src' => $rootLink . '/admin/FrontEnd/test.js'
+                //'src' => $rootLink . '/customer/bundle_advance.js'
             )
         );
         $shopify = shopifyInit($db, $shop, $appId);
-        $scriptTag = $shopify('POST', '/admin/api/2020-10/script_tags.json', $script_array);
-        var_dump($scriptTag);
-        die();
+        $scriptTag = $shopify('GET', '/admin/api/2020-10/script_tags.json');
 
+        echo json_encode($scriptTag);
+    }
+    if ($action == "deleteScriptTag") {
+        $since_id = $_GET["id"];
+        $shopify = shopifyInit($db, $shop, $appId);
+        $scriptTag = $shopify("DELETE", '/admin/api/2020-10/script_tags/' . $since_id . '.json');
+        echo json_encode($scriptTag);
+    }
+    if ($action == "editScriptTag") {
+        $since_id = $_GET["id"];
+        $script_array = array(
+            'script_tag' => array(
+                'id' => $since_id,
+                'src' => $rootLink . '/admin/FrontEnd/test.js?v=' .  $since_id
+                //'src' => $rootLink . '/customer/bundle_advance.js'
+            )
+        );
+        $shopify = shopifyInit($db, $shop, $appId);
+        $scriptTag = $shopify("PUT", '/admin/api/2020-10/script_tags/' . $since_id . '.json',$script_array);
         echo json_encode($scriptTag);
     }
     if ($action == "getSettings") {
@@ -151,6 +169,7 @@ if (isset($_POST["action"])) {
         $bundle_id          = $bundle["id"];
         $listProducts       = fetchDbArray("SELECT * FROM bundle_advance_products WHERE shop = '$shop' AND bundle_id='$bundle_id'");
         $doneCreateProducts = createSpecificProducts($db, $shop, $newBundleId, $listProducts);
+       
         $listRules          = fetchDbArray("SELECT * FROM bundle_advance_rules WHERE shop = '$shop' AND bundle_id='$bundle_id'");
         $doneCreateRules    = createRules($db, $shop, $newBundleId, $listRules);
         echo json_encode($doneCreateProducts && $doneCreateRules);
@@ -180,7 +199,8 @@ if (isset($_POST["action"])) {
     }
     if ($action == "createProducts") {
         $bundle_id = $_POST["bundle_id"]; 
-        $products = $_POST["products"];
+        $products = json_decode($_POST["products"],true);
+
         $doneCreateProducts = createSpecificProducts($db, $shop, $bundle_id, $products);
         echo json_encode($doneCreateProducts);
     }
@@ -324,6 +344,8 @@ function updateBundle ($db, $shop, $bundle) {
 }
 
 function createSpecificProducts($db, $shop, $bundleId, $listProducts) {
+    // var_dump($listProducts);
+    // die();
     $i = 0;
     foreach ($listProducts as $product) {
         $product_id = isset($product["product_id"]) ? $product["product_id"] : $product["id"];

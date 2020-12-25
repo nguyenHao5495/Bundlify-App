@@ -14,6 +14,9 @@ const initialState1 = {
         valueTags: null
     }
 }
+const initialState2 = {
+    dataTable: [],
+}
 function Reducer(state = initialState, actions = {}) {
     switch (actions.type) {
         case "DATA_SUCCESS":
@@ -35,5 +38,15 @@ function Reducer1(state = initialState1, actions = {}) {
     }
     return state;
 }
+function Reducer2(state = initialState2, actions = {}) {
+    switch (actions.type) {
+        case "DATA_RULES":
+            return {
+                ...actions,
 
-export { Reducer, Reducer1 } 
+            }
+    }
+    return state;
+}
+
+export { Reducer, Reducer1, Reducer2 } 
