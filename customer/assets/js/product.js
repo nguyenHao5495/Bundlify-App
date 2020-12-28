@@ -54,6 +54,7 @@ function ot_ba_applyCss() {
                 font-size: ${ot_ba_settings.title_text_size}px;
                 color: ${ot_ba_settings.title_text_color};
                 background-color: ${ot_ba_settings.title_background_color};
+                border-radius: 10px;
             }
             .${ot_ba_mainClass} .${ot_ba_add_btn} p {
                 font-size: ${ot_ba_settings.button_text_size}px;
@@ -118,7 +119,7 @@ function ot_ba_displayListProducts(comboClass, bundle) {
         $(`.${comboClass} .${ot_ba_listProductsClass} [ot-product-id="${product.id}"]`).append(`
             <div class="${ot_ba_product_img}">
                 <a target="_blank" href="${product.handle}">
-                    <div style="background-image: url(${product.image.src ? product.image.src : ''})"></div>
+                    <img src="${product.image.src ? product.image.src : ''}" alt="${product.handle}">
                 </a>
             </div>
         `);

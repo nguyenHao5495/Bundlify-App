@@ -24,6 +24,7 @@ function Reducer(state = initialState, actions = {}) {
                 ...actions,
                 getStore: true
             }
+        default:
     }
 
     return state;
@@ -35,6 +36,7 @@ function Reducer1(state = initialState1, actions = {}) {
                 ...actions,
 
             }
+        default:
     }
     return state;
 }
@@ -45,6 +47,7 @@ function Reducer2(state = initialState2, actions = {}) {
                 ...actions,
 
             }
+        default:
     }
     return state;
 }

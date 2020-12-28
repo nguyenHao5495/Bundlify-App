@@ -118,8 +118,8 @@ function ot_ba_displayListProducts(comboClass, bundle) {
         // Image
         $(`.${comboClass} .${ot_ba_listProductsClass} [ot-product-id="${product.id}"]`).append(`
             <div class="${ot_ba_product_img}">
-                <a target="_blank" href="${product.handle}">
-                    <div style="background-image: url(${product.image.src ? product.image.src : ''})"></div>
+                <a target="_blank" href="${product.handle}" >
+                    <img src="${product.image.src ? product.image.src : ''}" alt="${product.handle}">
                 </a>
             </div>
         `);

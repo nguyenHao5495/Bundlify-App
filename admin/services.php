@@ -206,7 +206,7 @@ if (isset($_POST["action"])) {
     }
     if ($action == "createRules") {
         $bundle_id  = $_POST["bundle_id"];
-        $rules      = $_POST["rules"];
+        $rules      = json_decode($_POST["rules"],true);
         $doneCreateRules    = createRules($db, $shop, $bundle_id, $rules);
         echo json_encode($doneCreateRules);
     }

@@ -27,7 +27,7 @@ if (typeof ot_ba_checkJS == "undefined") {
 
 	async function ot_ba_init() {
 		ot_ba_settings = await ot_ba_getSettings();
-
+		console.log(ot_ba_settings);
 		if (ot_ba_settings) {
 			if (ot_ba_settings.enable_admin_mode == 0) {
 				ot_ba_loadFile();
@@ -51,6 +51,7 @@ if (typeof ot_ba_checkJS == "undefined") {
 			ot_ba_getScript(`${ot_ba_rootLink}/assets/js/cart.js?v=${ot_ba_settings.v}`);
 		}
 		else if (currentUrl.indexOf('products') > -1) {
+			console.log(ot_ba_settings.v);
 			ot_ba_getScript(`${ot_ba_rootLink}/assets/js/product.js?v=${ot_ba_settings.v}`);
 		}
 		// if (currentUrl.indexOf('cart') == -1 && $(`form[action^="/cart"]`).length > 0) {

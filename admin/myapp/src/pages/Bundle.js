@@ -9,8 +9,7 @@ import { ShopDoamin } from "../httpService/http-common";
 
 import {
     PlusMinor,
-    DeleteMinor,
-    CirclePlusMinor
+    DeleteMinor
 } from '@shopify/polaris-icons';
 import { connect } from 'react-redux';
 
@@ -31,8 +30,8 @@ class Bundle extends React.Component {
         dataSourceTable: [
         ],
         count: 0,
-        amount: 0,
-        checkAmount: "percent_off",
+        Amount: 0,
+        discount_type: "percent_off",
         active: false,
         valueLayOut: "inline",
         bundleMessage: "Bundle and Save!",
@@ -52,18 +51,18 @@ class Bundle extends React.Component {
 
     }
     handleAdd = () => {
-        const { count, dataSourceTable, amount } = this.state;
+        const { count, dataSourceTable, Amount } = this.state;
         const newData = {
             id: `Rule0${count + 1}`,
             quantity: String(count + 1),
-            Amount: amount + 5,
-            checkamount: "percent_off"
+            amount: Amount + 5,
+            discount_type: "percent_off"
         };
         this.setState({
             dataSourceTable: [...dataSourceTable, newData],
             count: count + 1,
-            amount: amount + 5,
-            checkamount: "percent_off"
+            Amount: Amount + 5,
+            discount_type: "percent_off"
         });
 
     }
@@ -100,7 +99,7 @@ class Bundle extends React.Component {
                     // Return a new object
                     return {
                         ...item,  // copy the existing item
-                        Amount: value // replace the email addr
+                        amount: value // replace the email addr
                     }
                 }
                 // Leave every other item unchanged
@@ -117,7 +116,7 @@ class Bundle extends React.Component {
                     // Return a new object
                     return {
                         ...item,  // copy the existing item
-                        checkamount: value // replace the email addr
+                        discount_type: value // replace the email addr
                     }
                 }
                 // Leave every other item unchanged
@@ -202,24 +201,24 @@ class Bundle extends React.Component {
                                                 )} />
                                             <Column
                                                 title="Discount Type"
-                                                dataIndex="checkamount"
-                                                key="checkamount"
+                                                dataIndex="discount_type"
+                                                key="discount_type"
                                                 render={(text, record) => (
                                                     <Select
                                                         options={options}
                                                         onChange={(value) => this.onChange1(value, record.id)}
-                                                        value={record.checkamount}
+                                                        value={record.discount_type}
                                                     />
                                                 )}
                                             />
                                             <Column
                                                 title="Amount"
-                                                dataIndex="Amount"
-                                                key="Amount"
+                                                dataIndex="amount"
+                                                key="amount"
                                                 render={(text, record) => (
                                                     <div className="regular-input input-table flex">
                                                         <TextField type="number" min={1} value={String(text)} onChange={(value) => this.onChangeAmount(value, record.id)} />
-                                                        {record.checkamount === 'percent_off' &&
+                                                        {record.discount_type === 'percent_off' &&
                                                             <div className="regular-input-after">%</div>
                                                         }
 
@@ -275,8 +274,9 @@ class Bundle extends React.Component {
                                                         </div>
                                                         <div className="product-title">{item.title}</div>
                                                     </div>
-                                                    <Icon
-                                                        source={CirclePlusMinor} />
+                                                    <div className="ot-ba-product-plus">
+                                                        <img src="//cdn.shopify.com/s/files/1/0002/7728/2827/t/2/assets/ba-plus_38x.png?10643061042407540549" alt="icon plus" />
+                                                    </div>
                                                 </div>
                                             </List.Item>
                                         )}
@@ -320,7 +320,6 @@ class Bundle extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         getStore: state.store.getStore,
         dataSelect: state.store.dataSelect,

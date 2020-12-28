@@ -22,21 +22,29 @@ export default {
         formData.append("bundle", JSON.stringify(data));
         formData.append("action", "createBundle");
         formData.append("shop", ShopDoamin);
-        console.log(...formData);
-        creatRules(3)
-        // return (
-        //     HTTP.post(`/admin/services.php?shop=${ShopDoamin}&action=saveSettings`, formData)
-        //         .then(res => {
-        //             console.log(res.data);
-        //             if (res) {
-        //                 creatProduct(res.data)
-        //             }
-        //         }).catch((err) => {
-        //             console.log(err);
-        //         })
-        // )
+        return (
+            HTTP.post(`/admin/services.php?shop=${ShopDoamin}&action=saveSettings`, formData)
+                .then(res => {
+                    console.log(res.data);
+                    if (res) {
+                        creatProduct(res.data);
+                        creatRules(res.data);
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                })
+        )
     },
-    listBundle: () => HTTP.get(`/admin/services.php?shop=${ShopDoamin}&action=getBundles&page=1`),
+    listBundle: (page) => {
+        return (
+            HTTP.get(`/admin/services.php?shop=${ShopDoamin}&action=getBundles&page=${page}`)
+        )
+    },
+    listTotalBundle: () => {
+        return (
+            HTTP.get(`/admin/services.php?shop=${ShopDoamin}&action=getTotalBundle`)
+        )
+    },
     updateBundleStatus: (data) => {
         console.log(data);
 
@@ -52,6 +60,11 @@ export default {
             )
         }
     },
+    deleteBundle: (id) => {
+        return (
+            HTTP.get(`admin/services.php?shop=${ShopDoamin}&action=deleteBundle&id=${id}`)
+        )
+    },
 
 }
 const creatProduct = (id) => {
@@ -63,12 +76,23 @@ const creatProduct = (id) => {
         formData.append("action", "createProducts");
         formData.append("products", JSON.stringify(listProducts));
         formData.append("shop", ShopDoamin);
-        console.log(...formData);
         return (
             HTTP.post(`/admin/services.php`, formData)
         )
     }
 }
 const creatRules = (id) => {
-    console.log(id);
+
+    const listRules = store.getState().store2.dataTable;
+    console.log(listRules);
+    if (listRules) {
+        let formData = new FormData();
+        formData.append("bundle_id", id);
+        formData.append("action", "createRules");
+        formData.append("rules", JSON.stringify(listRules));
+        formData.append("shop", ShopDoamin);
+        return (
+            HTTP.post(`/admin/services.php`, formData)
+        )
+    }
 }

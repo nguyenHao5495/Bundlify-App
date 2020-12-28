@@ -1,10 +1,11 @@
 let ot_ba_discountPrice = 0;
 let ot_ba_cart;
 ot_ba_cartInit();
-console.log("cart");
+console.log("cart nhé");
 async function ot_ba_cartInit() {
     ot_ba_cart = await ot_ba_getCart();
     ot_ba_discountPrice = await ot_ba_createDiscountPrice();
+    console.log(ot_ba_discountPrice);
     if (ot_ba_discountPrice > 0) {
         ot_ba_displayDiscountPrice();
         let newAttribute = {
@@ -21,6 +22,7 @@ async function ot_ba_cartInit() {
 
 function ot_ba_displayDiscountPrice() {
     let originalTotalPrice = Shopify.formatMoney(ot_ba_cart.total_price);
+    console.log(originalTotalPrice);
     if (ot_ba_settings.total_price_class && ot_ba_settings.total_price_class != '') {
         $(`${ot_ba_settings.total_price_class}`).html(`
             <span class="ot-combo-cart__subtotal money" style="text-decoration: line-through">
@@ -54,11 +56,13 @@ function ot_ba_displayDiscountPrice() {
 
 }
 
-$(":submit[name='checkout']").on('click', function (e) {
+$("#checkout_new").on('click', function (e) {
     if (ot_ba_discountPrice > 0) {
+        console.log("checkout");
         e.preventDefault();
         ot_ba_createDiscountCode(ot_ba_discountPrice)
             .then(discountCode => {
+                console.log(discountCode);
                 if (discountCode && discountCode.code) {
                     window.location = `/checkout.json?discount=${discountCode.code}`;
                 }
@@ -68,6 +72,7 @@ $(":submit[name='checkout']").on('click', function (e) {
 });
 
 // ----------- Api ------------
+
 function ot_ba_createDiscountPrice() {
     return new Promise(resolve => {
         $.ajax({

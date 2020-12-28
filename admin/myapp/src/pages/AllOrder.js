@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Layout, Heading, TextStyle, Card, Modal, Icon, Button, TextField } from '@shopify/polaris';
+import { Layout, Heading, TextStyle, Card, Modal, Icon, Button, TextField, Pagination } from '@shopify/polaris';
 import { Table, Switch, Space, Popconfirm } from 'antd';
 import Api from '../apis/RestFullApi';
 import {
@@ -11,25 +11,37 @@ const { Column } = Table;
 let dataTest = []
 
 const AllOrder = ({ changeSelected }) => {
-    const [data, setData] = useState(dataTest)
+    const [data, setData] = useState(dataTest);
+    const [totalBundle, setTotalBundle] = useState(0);
+    const [totalPage, settotalPage] = useState(0)
     const [searchTerm, setSearchTerm] = React.useState("");
     const [active, setActive] = useState(false);
     const [editData, seteditData] = useState();
+    const [current, setCurrent] = useState(1);
     useEffect(() => {
-        Api.listBundle().then((data) => {
+        Api.listBundle(current).then((data) => {
             setData(data.data);
-            dataTest = data.data
+            dataTest = data.data;
         }).catch((err) => {
             console.log(err);
         })
-    }, []);
+
+    }, [data]);
+    useEffect(() => {
+        Api.listTotalBundle().then((data) => {
+            setTotalBundle(data.data);
+            settotalPage(Math.ceil(data.data / 10));
+        }).catch((err) => {
+            console.log(err);
+        })
+    });
     const onChangeSwitch = (value, key) => {
         console.log(value);
         let valueSwitch = "";
         if (value === true) {
-            valueSwitch = '0'
-        } else {
             valueSwitch = '1'
+        } else {
+            valueSwitch = '0'
         }
         console.log(valueSwitch);
         if (valueSwitch) {
@@ -56,6 +68,14 @@ const AllOrder = ({ changeSelected }) => {
     useEffect(() => {
         Api.updateBundleStatus(editData)
     }, [editData]);
+    useEffect(() => {
+        Api.listBundle(current).then((data) => {
+            setData(data.data);
+            dataTest = data.data
+        }).catch((err) => {
+            console.log(err);
+        })
+    }, [current]);
     const onChangeSearch = useCallback((newValue) => setSearchTerm(newValue), []);
     useEffect(() => {
         if (searchTerm !== "") {
@@ -72,9 +92,10 @@ const AllOrder = ({ changeSelected }) => {
         setActive(!active)
     };
     const handleDelete = (key) => {
-        setData(
-            data.filter((item) => item.id !== key),
-        )
+        Api.deleteBundle(key.id).then((data) => {
+        }).catch((err) => {
+            console.log(err);
+        })
     };
     return (
         <div className="wrapper">
@@ -124,7 +145,7 @@ const AllOrder = ({ changeSelected }) => {
                             }
 
                             <TextField value={searchTerm} onChange={onChangeSearch} placeholder="Search by bundle name..." />
-                            <Table dataSource={data} rowKey={data => data.id}>
+                            <Table dataSource={data} rowKey={data => data.id} pagination={false}>
                                 <Column
                                     dataIndex="bundle_name"
                                     key="bundle_name"
@@ -132,7 +153,7 @@ const AllOrder = ({ changeSelected }) => {
                                 <Column
                                     render={(text, record) => (
                                         <div className="text-center">
-                                            {record.enable_bundle === '1' ? <Switch checked={false} onChange={(value) => { onChangeSwitch(value, record) }} /> : <Switch checked={true} onChange={(value) => { onChangeSwitch(value, record) }} />}
+                                            {record.enable_bundle === '0' ? <Switch checked={false} onChange={(value) => { onChangeSwitch(value, record) }} /> : <Switch checked={true} onChange={(value) => { onChangeSwitch(value, record) }} />}
                                         </div>
                                     )} />
                                 <Column
@@ -143,7 +164,7 @@ const AllOrder = ({ changeSelected }) => {
                                             <Space size="middle">
                                                 <a className="btn_table" href="# " onClick={() => changeEdit(record)}>Edit <Icon source={EditMinor} /></a>
                                                 <div className="delete-rule">
-                                                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+                                                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)}>
                                                         <a className="btn_table" href="javascriptvoid(0)">Delete <Icon source={DeleteMinor} /></a>
                                                     </Popconfirm>
                                                 </div>
@@ -153,6 +174,31 @@ const AllOrder = ({ changeSelected }) => {
 
                                     )} />
                             </Table>
+                            <div className="text-right margin--top--15 flex pagination_">
+                                <div className="table_pagination">
+                                    {current < totalPage &&
+                                        <span>{(current - 1) * 10 + 1} - {(current - 1) * 10 + 10} of {totalBundle} rows</span>
+                                    }
+                                    {current === totalPage &&
+                                        <span>{(current - 1) * 10 + 1} - {totalBundle} of {totalBundle} rows</span>
+                                    }
+
+                                </div>
+                                <Pagination
+                                    hasPrevious
+                                    onPrevious={() => {
+                                        if (current !== 1) {
+                                            setCurrent(current - 1)
+                                        }
+                                    }}
+                                    hasNext
+                                    onNext={() => {
+                                        if (current <= totalPage - 1) {
+                                            setCurrent(current + 1)
+                                        }
+                                    }}
+                                />
+                            </div>
                         </Layout.Section>
                     </Layout>
                 </Card>

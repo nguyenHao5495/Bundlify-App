@@ -126,6 +126,7 @@ if (isset($_POST["action"])) {
                     . "ORDER BY bundle.bundle_order ASC");
                 
                 foreach ($bundles as $bundle) {
+                    
                     $bundleId = $bundle["id"]; 
                     $key  = array_search($bundleId, array_column($listBundles, "id"));  
                     if (gettype($key) == 'boolean' && $key == false) {  
@@ -145,6 +146,7 @@ if (isset($_POST["action"])) {
 
             // Calculate discount price 
             $discountPrice = calculateDiscountPrice($listBundles, $cart, 0);
+            //var_dump($listBundles);
             echo $discountPrice;
         } else {
             echo 0;

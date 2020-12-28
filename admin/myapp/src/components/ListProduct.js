@@ -32,11 +32,10 @@ class listProduct extends Component {
         if (nextState.dataSelect !== this.state.dataSelect) {
             let minimumQuantity = nextState.dataSelect.length;
             let hasMatchQuantity = store.getState().store2.dataTable.some(
-
-                e => e.quantity == minimumQuantity
+                e => Number(e.quantity) === minimumQuantity,
             );
             console.log(hasMatchQuantity, minimumQuantity);
-            if (minimumQuantity == 0) {
+            if (minimumQuantity === 0) {
                 this.setState({
                     err: "Select at least one product and up"
                 })
@@ -51,27 +50,7 @@ class listProduct extends Component {
                 })
             }
         }
-        if (nextState.dataSelect.length < store.getState().store2.dataTable.length) {
-            console.log("nho hon");
-        }
 
-        // if (nextState.dataSourceTable !== this.state.dataSourceTable || store.getState().store.dataSelect.length > 0) {
-        //     let minimumQuantity = store.getState().store.dataSelect.length;
-        //     let hasMatchQuantity = nextState.dataSourceTable.some(
-        //         e => e.quantity == minimumQuantity
-        //     );
-        //     console.log(hasMatchQuantity, minimumQuantity);
-        //     if (minimumQuantity == 0) {
-        //         return "Select at least one product and up";
-        //     } else if (!hasMatchQuantity) {
-        //         return `You need to setup a rule which has total quantity is: ${minimumQuantity}`;
-        //     } else {
-        //         return null;
-        //     }
-        //     if (nextState.dataSourceTable.length < store.getState().store.dataSelect.length) {
-        //         this.handleAdd();
-        //     }
-        // }
 
     }
     handleChange = (value, option) => {
@@ -85,6 +64,10 @@ class listProduct extends Component {
     }
     render() {
         const { dataSelect, err, dataListProduct } = this.state;
+        const datatest = store.getState().store.dataSelect;
+        const mapData = datatest.map((e) => {
+            return e.title
+        })
         return (
             <Card sectioned>
                 <Select
@@ -92,10 +75,11 @@ class listProduct extends Component {
                     style={{ width: '100%' }}
                     placeholder="Select products"
                     onChange={this.handleChange}
+                    defaultValue={mapData}
                 >
                     {dataListProduct}
                 </Select>
-                {err &&
+                {err && mapData.length < 1 &&
                     <span className="empty_product" >{err}</span>
                 }
             </Card>
