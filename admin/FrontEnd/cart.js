@@ -1,30 +1,31 @@
-let ot_ba_discountPrice = 0;
-let ot_ba_cart;
-ot_ba_cartInit();
+
+let ot_bundlfy_discountPrice = 0;
+let ot_bundlfy_cart;
+ot_bundlfy_cartInit();
 console.log("cart nhé");
-async function ot_ba_cartInit() {
-    ot_ba_cart = await ot_ba_getCart();
-    ot_ba_discountPrice = await ot_ba_createDiscountPrice();
-    console.log(ot_ba_discountPrice);
-    if (ot_ba_discountPrice > 0) {
-        ot_ba_displayDiscountPrice();
+async function ot_bundlfy_cartInit() {
+    ot_bundlfy_cart = await ot_bundlfy_getCart();
+    ot_bundlfy_discountPrice = await ot_bundlfy_createDiscountPrice();
+    console.log(ot_bundlfy_discountPrice);
+    if (ot_bundlfy_discountPrice > 0) {
+        ot_bundlfy_displayDiscountPrice();
         let newAttribute = {
-            "Source": ot_ba_settings.order_tag
+            "Source": ot_bundlfy_settings.order_tag
         };
-        ot_ba_updateCartAttribute(newAttribute);
+        ot_bundlfy_updateCartAttribute(newAttribute);
     } else {
         let newAttribute = {
             "Source": ''
         };
-        ot_ba_updateCartAttribute(newAttribute);
+        ot_bundlfy_updateCartAttribute(newAttribute);
     }
 }
 
-function ot_ba_displayDiscountPrice() {
-    let originalTotalPrice = Shopify.formatMoney(ot_ba_cart.total_price);
+function ot_bundlfy_displayDiscountPrice() {
+    let originalTotalPrice = Shopify.formatMoney(ot_bundlfy_cart.total_price);
     console.log(originalTotalPrice);
-    if (ot_ba_settings.total_price_class && ot_ba_settings.total_price_class != '') {
-        $(`${ot_ba_settings.total_price_class}`).html(`
+    if (ot_bundlfy_settings.total_price_class && ot_bundlfy_settings.total_price_class != '') {
+        $(`${ot_bundlfy_settings.total_price_class}`).html(`
             <span class="ot-combo-cart__subtotal money" style="text-decoration: line-through">
                 ${originalTotalPrice}
             </span>
@@ -44,7 +45,7 @@ function ot_ba_displayDiscountPrice() {
     }
 
     if ($('.ot-combo-cart__subtotal').length > 0) {
-        let newTotalPrice = Shopify.formatMoney(ot_ba_cart.total_price - ot_ba_discountPrice);
+        let newTotalPrice = Shopify.formatMoney(ot_bundlfy_cart.total_price - ot_bundlfy_discountPrice);
         $('.ot-combo-cart__subtotal')
             .parent()
             .append(`
@@ -53,14 +54,14 @@ function ot_ba_displayDiscountPrice() {
                 </span>
             `);
     }
-
+    //OT_03a5ea41763778bc
 }
 
 $("#checkout_new").on('click', function (e) {
-    if (ot_ba_discountPrice > 0) {
+    if (ot_bundlfy_discountPrice > 0) {
         console.log("checkout");
         e.preventDefault();
-        ot_ba_createDiscountCode(ot_ba_discountPrice)
+        ot_bundlfy_createDiscountCode(ot_bundlfy_discountPrice)
             .then(discountCode => {
                 console.log(discountCode);
                 if (discountCode && discountCode.code) {
@@ -73,15 +74,15 @@ $("#checkout_new").on('click', function (e) {
 
 // ----------- Api ------------
 
-function ot_ba_createDiscountPrice() {
+function ot_bundlfy_createDiscountPrice() {
     return new Promise(resolve => {
         $.ajax({
-            url: `${ot_ba_rootLink}/customer/bundle_advance.php`,
+            url: `${ot_bundlfy_rootLink}/customer/bundle_advance.php`,
             type: 'POST',
             data: {
                 shop: Shopify.shop,
                 action: 'createDiscountPrice',
-                cart: ot_ba_cart,
+                cart: ot_bundlfy_cart,
                 customerId: __st.cid
             },
             dataType: 'json'
@@ -91,10 +92,10 @@ function ot_ba_createDiscountPrice() {
     });
 }
 
-function ot_ba_createDiscountCode(discountPrice) {
+function ot_bundlfy_createDiscountCode(discountPrice) {
     return new Promise(resolve => {
         $.ajax({
-            url: `${ot_ba_rootLink}/customer/bundle_advance.php`,
+            url: `${ot_bundlfy_rootLink}/customer/bundle_advance.php`,
             type: 'POST',
             data: {
                 shop: Shopify.shop,
@@ -108,7 +109,7 @@ function ot_ba_createDiscountCode(discountPrice) {
     });
 }
 
-function ot_ba_getCart() {
+function ot_bundlfy_getCart() {
     return new Promise(resolve => {
         $.ajax({
             url: `/cart.js`,
@@ -132,7 +133,7 @@ function ot_ba_getCart() {
     });
 }
 
-function ot_ba_updateCartAttribute(attributes) {
+function ot_bundlfy_updateCartAttribute(attributes) {
     $.ajax({
         type: 'POST',
         url: '/cart/update.js',

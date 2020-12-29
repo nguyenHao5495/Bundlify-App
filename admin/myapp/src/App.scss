@@ -76,6 +76,23 @@ span.ant-select-selection-item{
     justify-content: center;
   }
 }
+.ant-dropdown-trigger{
+  color: #6371c7 !important;
+}
+.ant-switch-checked {
+  background-color: #6371c7;
+}
+.btn_action{
+  display: inline-flex !important;
+  align-items: center;
+  color: #999 !important;
+  .Polaris-Icon{
+    margin-right: 10px;
+    svg{
+      fill: #999;
+    }
+  }
+}
 .product-item{
   text-align: center;
   .product-iamge{

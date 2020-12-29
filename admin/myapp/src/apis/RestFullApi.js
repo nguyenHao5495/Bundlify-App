@@ -1,6 +1,7 @@
 import { HTTP } from "../httpService/http-common";
 import { ShopDoamin } from "../httpService/http-common";
 import store from '../store/index';
+
 export default {
     listProduct: () => HTTP.get(`admin/services.php?shop=${ShopDoamin}&action=getProducts&since_id=1&limit=50`),
     listSettings: () => HTTP.get(`/admin/services.php?shop=${ShopDoamin}&action=getSettings`),
@@ -65,6 +66,16 @@ export default {
             HTTP.get(`admin/services.php?shop=${ShopDoamin}&action=deleteBundle&id=${id}`)
         )
     },
+    urlView: (id) => {
+        return (
+            HTTP.get(`admin/services.php?shop=${ShopDoamin}&action=getUrlViewBundle&bundle_id=${id}`)
+        )
+    },
+    getorders: () => {
+        return (
+            HTTP.get(`admin/services.php?shop=${ShopDoamin}&action=getOrders`)
+        )
+    }
 
 }
 const creatProduct = (id) => {

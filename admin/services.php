@@ -23,7 +23,7 @@ if (isset($_GET["action"])) {
             )
         );
         $shopify = shopifyInit($db, $shop, $appId);
-        $scriptTag = $shopify('GET', '/admin/api/2020-10/script_tags.json');
+        $scriptTag = $shopify('POST', '/admin/api/2020-10/script_tags.json',$script_array);
 
         echo json_encode($scriptTag);
     }

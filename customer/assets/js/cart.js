@@ -2,24 +2,24 @@ let ot_ba_discountPrice = 0;
 let ot_ba_cart;
 ot_ba_cartInit();
 
-async function ot_ba_cartInit () {
+async function ot_ba_cartInit() {
     ot_ba_cart = await ot_ba_getCart();
     ot_ba_discountPrice = await ot_ba_createDiscountPrice();
     if (ot_ba_discountPrice > 0) {
         ot_ba_displayDiscountPrice();
         let newAttribute = {
-            "Source" : ot_ba_settings.order_tag
+            "Source": ot_ba_settings.order_tag
         };
         ot_ba_updateCartAttribute(newAttribute);
     } else {
         let newAttribute = {
-            "Source" : ''
+            "Source": ''
         };
         ot_ba_updateCartAttribute(newAttribute);
     }
 }
 
-function ot_ba_displayDiscountPrice () {
+function ot_ba_displayDiscountPrice() {
     let originalTotalPrice = Shopify.formatMoney(ot_ba_cart.total_price);
     if (ot_ba_settings.total_price_class && ot_ba_settings.total_price_class != '') {
         $(`${ot_ba_settings.total_price_class}`).html(`
@@ -40,7 +40,7 @@ function ot_ba_displayDiscountPrice () {
             </span>
         `);
     }
-    
+
     if ($('.ot-combo-cart__subtotal').length > 0) {
         let newTotalPrice = Shopify.formatMoney(ot_ba_cart.total_price - ot_ba_discountPrice);
         $('.ot-combo-cart__subtotal')
@@ -51,7 +51,7 @@ function ot_ba_displayDiscountPrice () {
                 </span>
             `);
     }
-    
+
 }
 
 $(":submit[name='checkout']").on('click', function (e) {
@@ -59,25 +59,26 @@ $(":submit[name='checkout']").on('click', function (e) {
         e.preventDefault();
         ot_ba_createDiscountCode(ot_ba_discountPrice)
             .then(discountCode => {
-                if (discountCode && discountCode.code) {
-                    window.location = `/checkout.json?discount=${discountCode.code}`;
-                }
+                console.log(discountCode);
+                // if (discountCode && discountCode.code) {
+                //     window.location = `/checkout.json?discount=${discountCode.code}`;
+                // }
             });
         return false;
     }
 });
 
 // ----------- Api ------------
-function ot_ba_createDiscountPrice () {
+function ot_ba_createDiscountPrice() {
     return new Promise(resolve => {
         $.ajax({
             url: `${ot_ba_rootLink}/bundle_advance.php`,
             type: 'POST',
             data: {
-                shop        : Shopify.shop,
-                action      : 'createDiscountPrice',
-                cart        : ot_ba_cart,
-                customerId  : __st.cid
+                shop: Shopify.shop,
+                action: 'createDiscountPrice',
+                cart: ot_ba_cart,
+                customerId: __st.cid
             },
             dataType: 'json'
         }).done(result => {
@@ -92,9 +93,9 @@ function ot_ba_createDiscountCode(discountPrice) {
             url: `${ot_ba_rootLink}/bundle_advance.php`,
             type: 'POST',
             data: {
-                shop            : Shopify.shop,
-                action          : 'createDiscountCode',
-                discountPrice   : discountPrice/100,
+                shop: Shopify.shop,
+                action: 'createDiscountCode',
+                discountPrice: discountPrice / 100,
             },
             dataType: 'json'
         }).done(result => {
@@ -103,7 +104,7 @@ function ot_ba_createDiscountCode(discountPrice) {
     });
 }
 
-function ot_ba_getCart () {
+function ot_ba_getCart() {
     return new Promise(resolve => {
         $.ajax({
             url: `/cart.js`,
@@ -114,11 +115,11 @@ function ot_ba_getCart () {
             data.total_price = result.total_price;
             data.items = result.items.map(item => {
                 let reducedItem = {
-                    product_id : item.product_id,
-                    original_price : item.original_price,
-                    line_price : item.line_price,
-                    quantity : item.quantity,
-                    variant_id : item.variant_id
+                    product_id: item.product_id,
+                    original_price: item.original_price,
+                    line_price: item.line_price,
+                    quantity: item.quantity,
+                    variant_id: item.variant_id
                 }
                 return reducedItem;
             });

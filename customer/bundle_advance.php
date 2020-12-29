@@ -1,6 +1,6 @@
 <?php
 ini_set('display_errors', TRUE);
-error_reporting(E_ALL);
+error_reporting(0);
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 require '../vendor/autoload.php';

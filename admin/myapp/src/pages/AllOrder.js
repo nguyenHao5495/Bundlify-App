@@ -1,32 +1,85 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Layout, Heading, TextStyle, Card, Modal, Icon, Button, TextField, Pagination } from '@shopify/polaris';
-import { Table, Switch, Space, Popconfirm } from 'antd';
+import { Table, Switch, Space, Menu, Dropdown } from 'antd';
 import Api from '../apis/RestFullApi';
 import {
     EditMinor,
-    DeleteMinor
+    DeleteMinor,
+    ViewMinor
 } from '@shopify/polaris-icons';
-import Bundle from '../pages/Bundle'
+import Bundle from '../pages/Bundle';
+import { ShopDoamin } from "../httpService/http-common";
 const { Column } = Table;
 let dataTest = []
 
 const AllOrder = ({ changeSelected }) => {
     const [data, setData] = useState(dataTest);
+    const [totalOrder, settOtalOrder] = useState([]);
+    const [totalOrdersVal, settOtalOrdersVal] = useState(0);
+    const [totalValOff, settOtalValOff] = useState(0);
     const [totalBundle, setTotalBundle] = useState(0);
     const [totalPage, settotalPage] = useState(0)
     const [searchTerm, setSearchTerm] = React.useState("");
     const [active, setActive] = useState(false);
+    const [bundle, setBundle] = useState("");
     const [editData, seteditData] = useState();
     const [current, setCurrent] = useState(1);
+
+
     useEffect(() => {
+        Api.listBundle(current).then((data) => {
+            console.log(data.data);
+            setData(data.data);
+            dataTest = data.data;
+        }).catch((err) => {
+            console.log(err);
+        })
+        Api.getorders().then((data) => {
+            settOtalOrder(data.data);
+            totalOrder.forEach(order => {
+                let data = 0;
+                data += Number(order.total_price);
+                if (data > 0) {
+                    settOtalOrdersVal(data)
+                }
+                if (order.discount_applications.length > 0) {
+                    let discountCode = order.discount_applications.find(e => e.code.startsWith("OT_"));
+                    if (discountCode) {
+                        let dataOff = 0;
+                        dataOff += Number(discountCode.value);
+                        if (dataOff > 0) {
+                            settOtalValOff(dataOff)
+                        }
+                    }
+                }
+            });
+        }).catch((err) => {
+            console.log(err);
+        })
+
+    }, []);
+    const menu = (
+        <Menu>
+            <Menu.Item key="0">
+                <a className="btn_action" href="# " onClick={(e) => { e.preventDefault(); changeEdit(bundle) }}><Icon source={EditMinor} /> Edit</a>
+            </Menu.Item>
+            <Menu.Item key="1">
+                <a className="btn_action" href="# " onClick={(e) => { e.preventDefault(); urlViewBundle(bundle) }}><Icon source={ViewMinor} />View</a>
+            </Menu.Item>
+            <Menu.Item key="3">
+                <a className="btn_action" href="# " onClick={(e) => { e.preventDefault(); handleDelete(bundle) }}><Icon source={DeleteMinor} /> Delete</a>
+            </Menu.Item>
+        </Menu>
+    );
+    const listBundle = (current) => {
+        console.log("current:", current);
         Api.listBundle(current).then((data) => {
             setData(data.data);
             dataTest = data.data;
         }).catch((err) => {
             console.log(err);
         })
-
-    }, [data]);
+    }
     useEffect(() => {
         Api.listTotalBundle().then((data) => {
             setTotalBundle(data.data);
@@ -68,14 +121,7 @@ const AllOrder = ({ changeSelected }) => {
     useEffect(() => {
         Api.updateBundleStatus(editData)
     }, [editData]);
-    useEffect(() => {
-        Api.listBundle(current).then((data) => {
-            setData(data.data);
-            dataTest = data.data
-        }).catch((err) => {
-            console.log(err);
-        })
-    }, [current]);
+
     const onChangeSearch = useCallback((newValue) => setSearchTerm(newValue), []);
     useEffect(() => {
         if (searchTerm !== "") {
@@ -87,16 +133,25 @@ const AllOrder = ({ changeSelected }) => {
             setData(dataTest)
         }
     }, [searchTerm]);
-    const changeEdit = (value) => {
-        console.log(value);
+    const changeEdit = (bunle) => {
+        console.log(bunle);
         setActive(!active)
     };
-    const handleDelete = (key) => {
-        Api.deleteBundle(key.id).then((data) => {
+    const handleDelete = (bunle) => {
+        Api.deleteBundle(bunle.id).then((data) => {
+            listBundle(current)
         }).catch((err) => {
             console.log(err);
         })
     };
+    const urlViewBundle = (bunle) => {
+        Api.urlView(bunle.id).then((data) => {
+            console.log(data.data);
+            window.open(`https://${ShopDoamin}/products/${data.data.slice(1, -1).replace('"', '')}`)
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
     return (
         <div className="wrapper">
             <div className="Recent_Orders">
@@ -106,15 +161,15 @@ const AllOrder = ({ changeSelected }) => {
                             <Card sectioned>
                                 <div className="total_order_table">
                                     <div className="left">
-                                        <Heading>0₫</Heading>
+                                        <Heading>{totalOrdersVal}₫</Heading>
                                         <TextStyle variation="subdued">Total orders value</TextStyle>
                                     </div>
                                     <div className="center">
-                                        <Heading>0₫</Heading>
+                                        <Heading>{totalValOff}₫</Heading>
                                         <TextStyle variation="subdued">Value off from offers</TextStyle>
                                     </div>
                                     <div className="right">
-                                        <Heading>0</Heading>
+                                        <Heading>{totalOrder.length}</Heading>
                                         <TextStyle variation="subdued">Total orders</TextStyle>
                                     </div>
                                 </div>
@@ -162,12 +217,11 @@ const AllOrder = ({ changeSelected }) => {
                                     render={(text, record) => (
                                         <div className="text-center">
                                             <Space size="middle">
-                                                <a className="btn_table" href="# " onClick={() => changeEdit(record)}>Edit <Icon source={EditMinor} /></a>
-                                                <div className="delete-rule">
-                                                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)}>
-                                                        <a className="btn_table" href="javascriptvoid(0)">Delete <Icon source={DeleteMinor} /></a>
-                                                    </Popconfirm>
-                                                </div>
+                                                <Dropdown overlay={menu} trigger={['click']}>
+                                                    <a className="ant-dropdown-link" href="# " onClick={() => setBundle(record)}>
+                                                        Action
+                                                    </a>
+                                                </Dropdown>
                                             </Space>
 
                                         </div>
@@ -188,13 +242,17 @@ const AllOrder = ({ changeSelected }) => {
                                     hasPrevious
                                     onPrevious={() => {
                                         if (current !== 1) {
-                                            setCurrent(current - 1)
+                                            const current1 = current - 1
+                                            setCurrent(current1);
+                                            listBundle(current1)
                                         }
                                     }}
                                     hasNext
                                     onNext={() => {
                                         if (current <= totalPage - 1) {
-                                            setCurrent(current + 1)
+                                            const currentPlus = current + 1
+                                            setCurrent(currentPlus);
+                                            listBundle(currentPlus)
                                         }
                                     }}
                                 />
