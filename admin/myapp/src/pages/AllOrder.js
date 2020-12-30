@@ -139,26 +139,23 @@ const AllOrder = ({ changeSelected }) => {
         let listRules = [];
         await Api.getSpecificProductsBundle(bundle.id).then((data) => {
             listProducts = data.data;
-
-            console.log(data);
         }).catch((err) => {
             console.log(err);
         })
         await Api.getRulesBundle(bundle.id).then((data) => {
             listRules = data.data
-            console.log(data);
         }).catch((err) => {
             console.log(err);
         })
-        if (listProducts && listRules) {
-            store.dispatch({
-                type: "EDIT_BUNDLE",
-                dataBundle: bundle,
-                listProduct: listProducts,
-                listRules: listRules
 
-            })
-        }
+        store.dispatch({
+            type: "EDIT_BUNDLE",
+            dataBundle: bundle,
+            listProduct: listProducts,
+            listRules: listRules
+
+        })
+
 
     };
     const changeEditBundle = () => {

@@ -59,7 +59,6 @@
 }
 
 .ot-bundlfy .ot-bundlfy-list-products.ot-bundlfy-layout-inline .ot-bundlfy-product .ot-bundlfy-product-price p{
-    text-decoration: line-through;
     margin: 0 0 10px 0;
 }
 
@@ -130,6 +129,7 @@
 }
 .ot-bundlfy .ot-bundlfy-list-products.ot-bundlfy-layout-separate-line .ot-bundlfy-product .ot-bundlfy-product-variants select{
     border: 1px solid #ccc;
+    border-radius: 6px;
 }
 .ot-bundlfy .ot-bundlfy-list-products.ot-bundlfy-layout-separate-line .ot-bundlfy-product .ot-bundlfy-product-price {
     display: inline-block;

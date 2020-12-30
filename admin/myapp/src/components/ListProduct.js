@@ -25,8 +25,11 @@ class listProduct extends Component {
         })
         this.setState({
             err: "Select at least one product and up"
+
         })
+
     }
+
     componentWillUpdate(nextProps, nextState) {
 
         if (nextState.dataSelect !== this.state.dataSelect) {
@@ -52,6 +55,7 @@ class listProduct extends Component {
         }
 
 
+
     }
     handleChange = (value, option) => {
         this.setState({
@@ -65,9 +69,24 @@ class listProduct extends Component {
     render() {
         const { dataSelect, err, dataListProduct } = this.state;
         const datatest = store.getState().store.dataSelect;
-        const mapData = datatest.map((e) => {
-            return e.title
-        })
+        const storeSelect = store.getState().store3.listProduct;
+        let mapData = [];
+        if (storeSelect && storeSelect.length > 0) {
+            mapData = dataListProduct.filter(p =>
+                storeSelect.some(e => e && e.product_id == p.key)
+            );
+            // mapData = storeSelect.map((e) => {
+            //     return e.product_handle
+            // });
+            mapData = mapData.map((e) => {
+                return e.props.title
+            })
+            console.log(mapData);
+        } else if (datatest && datatest.length > 0) {
+            mapData = datatest.map((e) => {
+                return e.title
+            })
+        }
         return (
             <Card sectioned>
                 <Select
@@ -87,4 +106,72 @@ class listProduct extends Component {
     }
 }
 
+// const ListProduct = () => {
+//     const [dataSelect, setDataSelect] = useState([]);
+//     const [dataListProduct, SetDataListProduct] = useState([]);
+//     const [datatest, SetDatatest] = useState([]);
+//     const [storeSelect, SetDataStoreSelect] = useState([]);
+//     const [err, setErr] = useState("");
+//     useEffect(() => {
+//         Api.listProduct().then((data) => {
+//             const data1 = [];
+//             for (let i = 0; i < data.data.length; i++) {
+//                 data1.push(<Option key={data.data[i].id} id={data.data[i].id} product_id={data.data[i].id} src={data.data[i].image.src} title={data.data[i].title} product_handle={data.data[i].handle} product_quantity='1'>{data.data[i].title}</Option>)
+//             }
+//             SetDataListProduct(data1)
+//         }).catch((err) => {
+//             console.log(err);
+//         })
+//         setErr("Select at least one product and up");
+//         SetDatatest(store.getState().store.dataSelect);
+//         SetDataStoreSelect(store.getState().store3.listProduct)
+
+//     }, []);
+//     useEffect(() => {
+//         let minimumQuantity = dataSelect.length;
+//         let hasMatchQuantity = store.getState().store2.dataTable.some(
+//             e => Number(e.quantity) === minimumQuantity,
+//         );
+//         console.log(hasMatchQuantity, minimumQuantity);
+//         if (minimumQuantity === 0) {
+//             setErr("Select at least one product and up")
+
+//         } else if (!hasMatchQuantity) {
+//             setErr(`You need to setup a rule which has total quantity is: ${minimumQuantity}`)
+//         } else {
+//             setErr("")
+//         }
+//     }, [dataSelect]);
+//     const handleChange = (value, option) => {
+//         console.log(option);
+//         setDataSelect(option)
+//         store.dispatch({
+//             type: "DATA_SUCCESS",
+//             dataSelect: option
+//         })
+//     }
+//     console.log(storeSelect);
+//     return (
+//         <div>
+//             <Card sectioned>
+//                 <p>{storeSelect.id}</p>
+//                 <Select
+//                     mode="multiple"
+//                     style={{ width: '100%' }}
+//                     placeholder="Select products"
+//                     onChange={handleChange}
+//                     defaultValue={datatest}
+//                 >
+//                     {dataListProduct}
+//                 </Select>
+//                 {err &&
+//                     <span className="empty_product" >{err}</span>
+//                 }
+//             </Card>
+//         </div>
+//     );
+// }
+
 export default listProduct;
+
+
