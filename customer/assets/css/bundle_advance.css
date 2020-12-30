@@ -128,7 +128,9 @@
     margin-top: 5%;
     width: 20%;
 }
-
+.ot-bundlfy .ot-bundlfy-list-products.ot-bundlfy-layout-separate-line .ot-bundlfy-product .ot-bundlfy-product-variants select{
+    border: 1px solid #ccc;
+}
 .ot-bundlfy .ot-bundlfy-list-products.ot-bundlfy-layout-separate-line .ot-bundlfy-product .ot-bundlfy-product-price {
     display: inline-block;
     margin-top: 5%;

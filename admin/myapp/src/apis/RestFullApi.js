@@ -75,6 +75,16 @@ export default {
         return (
             HTTP.get(`admin/services.php?shop=${ShopDoamin}&action=getOrders`)
         )
+    },
+    getSpecificProductsBundle: (id) => {
+        return (
+            HTTP.get(`admin/services.php?shop=${ShopDoamin}&action=getSpecificProducts&bundle_id=${id}`)
+        )
+    },
+    getRulesBundle: (id) => {
+        return (
+            HTTP.get(`admin/services.php?shop=${ShopDoamin}&action=getRules&bundle_id=${id}`)
+        )
     }
 
 }

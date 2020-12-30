@@ -52,6 +52,7 @@ function ot_bundlfy_applyCss() {
                 font-size: ${ot_bundlfy_settings.title_text_size}px;
                 color: ${ot_bundlfy_settings.title_text_color};
                 background-color: ${ot_bundlfy_settings.title_background_color};
+                border-radius: 12px;
             }
             .${ot_bundlfy_mainClass} .${ot_bundlfy_add_btn} p {
                 font-size: ${ot_bundlfy_settings.button_text_size}px;
@@ -62,6 +63,9 @@ function ot_bundlfy_applyCss() {
                 border-top: 2px solid ${ot_bundlfy_settings.button_background_color};
             }
             ${ot_bundlfy_settings.custom_css}
+            .ot-bundlfy-product-title p,.ot-bundlfy-product-price p span{
+                color: ${ot_bundlfy_settings.button_text_color};
+            }
         </style>
     `);
 }
@@ -150,8 +154,8 @@ function ot_bundlfy_displayListProducts(Class, bundle) {
     });
 }
 
-function ot_bundlfy_displayAddBtn(comboClass, bundle) {
-    $(`.${comboClass}`).append(`
+function ot_bundlfy_displayAddBtn(Class, bundle) {
+    $(`.${Class}`).append(`
         <div class="${ot_bundlfy_add_btn}">
             <p onclick="ot_bundlfy_addBundle(${bundle.id})">
                 <span class="top">${ot_bundlfy_settings.button_text}</span>

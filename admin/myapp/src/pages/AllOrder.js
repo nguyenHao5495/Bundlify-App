@@ -9,6 +9,7 @@ import {
 } from '@shopify/polaris-icons';
 import Bundle from '../pages/Bundle';
 import { ShopDoamin } from "../httpService/http-common";
+import store from '../store/index';
 const { Column } = Table;
 let dataTest = []
 
@@ -108,7 +109,6 @@ const AllOrder = ({ changeSelected }) => {
                     }
 
                 }
-                // Leave every other item unchanged
                 return item;
             }),
             )
@@ -133,10 +133,37 @@ const AllOrder = ({ changeSelected }) => {
             setData(dataTest)
         }
     }, [searchTerm]);
-    const changeEdit = (bunle) => {
-        console.log(bunle);
-        setActive(!active)
+    const changeEdit = async (bundle) => {
+        setActive(!active);
+        let listProducts = [];
+        let listRules = [];
+        await Api.getSpecificProductsBundle(bundle.id).then((data) => {
+            listProducts = data.data;
+
+            console.log(data);
+        }).catch((err) => {
+            console.log(err);
+        })
+        await Api.getRulesBundle(bundle.id).then((data) => {
+            listRules = data.data
+            console.log(data);
+        }).catch((err) => {
+            console.log(err);
+        })
+        if (listProducts && listRules) {
+            store.dispatch({
+                type: "EDIT_BUNDLE",
+                dataBundle: bundle,
+                listProduct: listProducts,
+                listRules: listRules
+
+            })
+        }
+
     };
+    const changeEditBundle = () => {
+
+    }
     const handleDelete = (bunle) => {
         Api.deleteBundle(bunle.id).then((data) => {
             listBundle(current)
@@ -268,7 +295,7 @@ const AllOrder = ({ changeSelected }) => {
                         title="Edit bundle"
                         primaryAction={{
                             content: 'SAVE',
-                            onAction: changeEdit,
+                            onAction: changeEditBundle,
                         }}
                         secondaryActions={[
                             {

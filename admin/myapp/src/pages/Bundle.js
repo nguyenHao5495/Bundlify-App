@@ -311,7 +311,6 @@ class Bundle extends React.Component {
                         </Card>
                         <div className="text-right margin--top--15 margin--bottom--15">
                             <CreateData dataBuldle={dataBuldle} seclect={this.props.changeSelected} />
-
                         </div>
                     </div>
                 </div>
@@ -320,6 +319,7 @@ class Bundle extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
+    console.log(state);
     return {
         getStore: state.store.getStore,
         dataSelect: state.store.dataSelect,
@@ -336,7 +336,10 @@ const mapStateToProps = (state) => {
             checkShowTag: state.store1.checkShowTag,
             valueTags: state.store1.valueTags
         },
-        dataTable: state.store2.dataTable
+        dataTable: state.store2.dataTable,
+        dataBundle: state.store3.dataBundle,
+        listProduct: state.store3.listProduct,
+        listRules: state.store3.listRules
     }
 }
 export default connect(mapStateToProps)(Bundle);
